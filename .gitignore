@@ -1,0 +1,126 @@
+# AI Content Generator - Git Ignore
+
+# ============================================
+# Python AI Service
+# ============================================
+ai-service/__pycache__/
+ai-service/*.py[cod]
+ai-service/*$py.class
+ai-service/.env
+ai-service/venv/
+ai-service/env/
+ai-service/.venv/
+ai-service/*.log
+
+# ============================================
+# Java Spring Boot Backend
+# ============================================
+backend/target/
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+backend/.idea/
+backend/*.iml
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/bin/
+backend/build/
+backend/out/
+backend/logs/
+backend/application-local.properties
+
+# ============================================
+# React Frontend
+# ============================================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+frontend/.vite/
+frontend/.cache/
+frontend/coverage/
+frontend/*.log
+
+# ============================================
+# Database
+# ============================================
+*.sql.backup
+*.dump
+
+# ============================================
+# IDE & Editors
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ============================================
+# OS Files
+# ============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# ============================================
+# Logs
+# ============================================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================
+# Environment Variables
+# ============================================
+.env
+.env.local
+.env.*.local
+.env.production
+
+# ============================================
+# Temporary Files
+# ============================================
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+
+# ============================================
+# Package Files
+# ============================================
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# ============================================
+# Secrets & Keys
+# ============================================
+*.pem
+*.key
+*.cert
+secrets/
+credentials/
+
+# ============================================
+# Firebase
+# ============================================
+backend/firebase-credentials.json
+**/firebase-credentials.json
+backend/.env
