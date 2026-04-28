@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Sessions Fix</title>
+</head>
+<body>
+    <h1>Test Sessions API Fix</h1>
+    <button onclick="testRegister()">1. Register Test User</button>
+    <button onclick="testLogin()">2. Login</button>
+    <button onclick="testGetSessions()">3. Get Sessions</button>
+    <button onclick="testCreateSession()">4. Create Test Session</button>
+    <button onclick="testGetSessionsAgain()">5. Get Sessions Again</button>
+    <pre id="output"></pre>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8080/api';
+        const output = document.getElementById('output');
+
+        async function testRegister() {
+            try {
+                output.textContent = 'Registering test user...\n';
+                
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: 'test@example.com',
+                        username: 'testuser',
+                        password: 'password123',
+                        fullName: 'Test User'
+                    })
+                });
+
+                const data = await response.json();
+                output.textContent += `Register Status: ${response.status}\n`;
+                output.textContent += `Response: ${JSON.stringify(data, null, 2)}\n\n`;
+
+            } catch (error) {
+                output.textContent += `Register Error: ${error.message}\n\n`;
+            }
+        }
+
+        async function testLogin() {
+            try {
+                output.textContent += 'Logging in...\n';
+                
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: 'test@example.com',
+                        password: 'password123'
+                    })
+                });
+
+                const data = await response.json();
+                output.textContent += `Login Status: ${response.status}\n`;
+                
+                if (response.ok && data.accessToken) {
+                    localStorage.setItem('accessToken', data.accessToken);
+                    localStorage.setItem('refreshToken', data.refreshToken);
+                    output.textContent += `Login successful! Token stored.\n`;
+                } else {
+                    output.textContent += `Login failed: ${JSON.stringify(data, null, 2)}\n`;
+                }
+                output.textContent += '\n';
+
+            } catch (error) {
+                output.textContent += `Login Error: ${error.message}\n\n`;
+            }
+        }
+
+        async function testGetSessions() {
+            try {
+                const token = localStorage.getItem('accessToken');
+                
+                if (!token) {
+                    output.textContent += 'Error: No access token found. Please login first.\n\n';
+                    return;
+                }
+
+                output.textContent += 'Fetching sessions...\n';
+                
+                const response = await fetch(`${API_BASE_URL}/chat/sessions`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                output.textContent += `Sessions Status: ${response.status}\n`;
+
+                const data = await response.json();
+                output.textContent += `Sessions Response: ${JSON.stringify(data, null, 2)}\n\n`;
+
+            } catch (error) {
+                output.textContent += `Sessions Error: ${error.message}\n\n`;
+            }
+        }
+
+        async function testCreateSession() {
+            try {
+                const token = localStorage.getItem('accessToken');
+                
+                if (!token) {
+                    output.textContent += 'Error: No access token found. Please login first.\n\n';
+                    return;
+                }
+
+                output.textContent += 'Creating test session...\n';
+                
+                const response = await fetch(`${API_BASE_URL}/chat/sessions`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title: 'Test Session',
+                        contentType: 'general'
+                    })
+                });
+
+                output.textContent += `Create Session Status: ${response.status}\n`;
+
+                const data = await response.json();
+                output.textContent += `Create Session Response: ${JSON.stringify(data, null, 2)}\n\n`;
+
+            } catch (error) {
+                output.textContent += `Create Session Error: ${error.message}\n\n`;
+            }
+        }
+
+        async function testGetSessionsAgain() {
+            await testGetSessions();
+        }
+    </script>
+</body>
+</html>

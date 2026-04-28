@@ -46,15 +46,26 @@ public class ChatSessionRepository {
     }
     
     public List<ChatSession> findByUserIdOrderByUpdatedAtDesc(String userId) throws ExecutionException, InterruptedException {
+        // Temporary workaround: Get all user sessions and sort in memory
+        // This avoids the need for a Firestore composite index
         QuerySnapshot querySnapshot = firestore.collection(COLLECTION_NAME)
                 .whereEqualTo("userId", userId)
-                .orderBy("updatedAt", Query.Direction.DESCENDING)
                 .get()
                 .get();
         
-        return querySnapshot.getDocuments().stream()
+        List<ChatSession> sessions = querySnapshot.getDocuments().stream()
                 .map(doc -> doc.toObject(ChatSession.class))
                 .collect(Collectors.toList());
+        
+        // Sort by updatedAt in descending order (most recent first)
+        sessions.sort((a, b) -> {
+            if (a.getUpdatedAt() == null && b.getUpdatedAt() == null) return 0;
+            if (a.getUpdatedAt() == null) return 1;
+            if (b.getUpdatedAt() == null) return -1;
+            return b.getUpdatedAt().compareTo(a.getUpdatedAt());
+        });
+        
+        return sessions;
     }
     
     public long countByUserId(String userId) throws ExecutionException, InterruptedException {

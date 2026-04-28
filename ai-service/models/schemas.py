@@ -148,3 +148,65 @@ class FollowUpRequest(BaseModel):
 class FollowUpResponse(BaseModel):
     questions: List[str] = Field(..., description="List of 3-5 follow-up questions")
     content_type: ContentType
+
+# ── Image Generation ──────────────────────────────────────────────────────
+class ImageStyle(str, Enum):
+    realistic = "realistic"
+    artistic = "artistic"
+    anime = "anime"
+    digital_art = "digital_art"
+    oil_painting = "oil_painting"
+    watercolor = "watercolor"
+    sketch = "sketch"
+    cyberpunk = "cyberpunk"
+
+class ImageRequest(BaseModel):
+    prompt: str = Field(..., min_length=1, max_length=1000, description="Description of the image to generate")
+    negative_prompt: Optional[str] = Field(None, max_length=500, description="What to avoid in the image")
+    width: int = Field(default=512, ge=64, le=1024, description="Image width (must be multiple of 64)")
+    height: int = Field(default=512, ge=64, le=1024, description="Image height (must be multiple of 64)")
+    steps: int = Field(default=30, ge=10, le=50, description="Number of inference steps")
+    guidance_scale: float = Field(default=7.5, ge=1.0, le=20.0, description="How closely to follow the prompt")
+    style: Optional[ImageStyle] = Field(None, description="Style preset to apply")
+    user_id: Optional[str] = Field(None, description="User ID for tracking")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "prompt": "A beautiful sunset over mountains, peaceful landscape",
+                "negative_prompt": "blurry, low quality, distorted",
+                "width": 768,
+                "height": 512,
+                "steps": 30,
+                "guidance_scale": 7.5,
+                "style": "realistic",
+                "user_id": "123e4567-e89b-12d3-a456-426614174000"
+            }
+        }
+
+class ImageResponse(BaseModel):
+    imageUrl: str = Field(..., description="URL to the generated image")
+    prompt: str = Field(..., description="Prompt used for generation")
+    modelUsed: str = Field(..., description="Model that generated the image")
+    generationTime: float = Field(..., description="Time taken to generate in seconds")
+    seed: Optional[int] = Field(None, description="Seed used for generation")
+    parameters: Dict = Field(..., description="Generation parameters used")
+
+    class Config:
+        protected_namespaces = ()
+        json_schema_extra = {
+            "example": {
+                "imageUrl": "/api/images/123e4567-e89b-12d3-a456-426614174000.png",
+                "prompt": "A beautiful sunset over mountains, peaceful landscape, photorealistic, high quality",
+                "modelUsed": "stable-diffusion-xl-1024-v1-0",
+                "generationTime": 8.5,
+                "seed": 42,
+                "parameters": {
+                    "width": 768,
+                    "height": 512,
+                    "steps": 30,
+                    "guidance_scale": 7.5,
+                    "style": "realistic"
+                }
+            }
+        }

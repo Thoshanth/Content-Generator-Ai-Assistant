@@ -18,7 +18,9 @@ public class User {
     private String avatarUrl;
     private String plan = "free";
     private Integer dailyMessageCount = 0;
+    private Integer dailyImageCount = 0; // Track daily image generations
     private Timestamp lastMessageDate;
+    private Timestamp lastImageDate; // Track last image generation date
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }

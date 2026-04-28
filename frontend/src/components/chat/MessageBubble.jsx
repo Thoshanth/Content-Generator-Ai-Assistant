@@ -1,4 +1,4 @@
-import { User, Bot } from 'lucide-react'
+import { User, Bot, Image as ImageIcon, Download } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import ProviderIndicator from './ProviderIndicator'
 import ExportButtons from './ExportButtons'
@@ -6,6 +6,19 @@ import { motion } from 'framer-motion'
 
 const MessageBubble = ({ message }) => {
   const isUser = message.role === 'user'
+  const isImage = message.messageType === 'image'
+  const isImageRequest = message.messageType === 'image_request'
+
+  const handleImageDownload = () => {
+    if (message.imageUrl) {
+      const link = document.createElement('a')
+      link.href = `http://localhost:8080${message.imageUrl}`
+      link.download = `generated-image-${Date.now()}.png`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
+  }
 
   return (
     <motion.div 
@@ -21,6 +34,8 @@ const MessageBubble = ({ message }) => {
         }`}>
           {isUser ? (
             <User className="w-6 h-6 text-black" />
+          ) : isImage ? (
+            <ImageIcon className="w-6 h-6 text-peach" />
           ) : (
             <Bot className="w-6 h-6 text-peach" />
           )}
@@ -35,6 +50,30 @@ const MessageBubble = ({ message }) => {
           }`}>
             {isUser ? (
               <p className="whitespace-pre-wrap font-body text-sm md:text-base leading-relaxed">{message.content}</p>
+            ) : isImage && message.imageUrl ? (
+              // Generated Image Display
+              <div className="space-y-3">
+                <div className="relative group">
+                  <img 
+                    src={`http://localhost:8080${message.imageUrl}`}
+                    alt={message.imagePrompt || "Generated image"}
+                    className="max-w-full h-auto rounded-lg shadow-lg"
+                    style={{ maxHeight: '400px' }}
+                  />
+                  <button
+                    onClick={handleImageDownload}
+                    className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    title="Download image"
+                  >
+                    <Download className="w-4 h-4" />
+                  </button>
+                </div>
+                {message.imagePrompt && (
+                  <p className="text-sm text-text-secondary italic">
+                    "{message.imagePrompt}"
+                  </p>
+                )}
+              </div>
             ) : (
               <div className="prose prose-sm prose-invert max-w-none font-body text-sm md:text-base leading-relaxed">
                 {message.content ? (
@@ -56,7 +95,7 @@ const MessageBubble = ({ message }) => {
           </div>
 
           {/* Message Meta - AI Messages Only */}
-          {!isUser && !message.streaming && message.content && (
+          {!isUser && !message.streaming && (message.content || isImage) && (
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -65,11 +104,25 @@ const MessageBubble = ({ message }) => {
             >
               {/* Provider Info */}
               <div className="flex items-center space-x-2 text-xs font-body">
-                {message.provider && (
+                {isImage && message.imageModel ? (
+                  <span className="text-text-secondary bg-surface-raised px-2 py-1 rounded-md border border-white/5">
+                    {message.imageModel}
+                  </span>
+                ) : message.provider && (
                   <ProviderIndicator 
                     provider={message.provider} 
                     model={message.modelUsed} 
                   />
+                )}
+                {isImage && message.imageParameters?.generation_time && (
+                  <span className="text-text-secondary bg-surface-raised px-2 py-1 rounded-md border border-white/5">
+                    {message.imageParameters.generation_time}s
+                  </span>
+                )}
+                {isImage && message.imageParameters?.width && message.imageParameters?.height && (
+                  <span className="text-text-secondary bg-surface-raised px-2 py-1 rounded-md border border-white/5">
+                    {message.imageParameters.width}×{message.imageParameters.height}
+                  </span>
                 )}
                 {message.wordCount && (
                   <span className="text-text-secondary bg-surface-raised px-2 py-1 rounded-md border border-white/5">
@@ -83,11 +136,13 @@ const MessageBubble = ({ message }) => {
                 )}
               </div>
 
-              {/* Export Buttons */}
-              <ExportButtons 
-                content={message.content} 
-                contentType={message.contentType || 'general'} 
-              />
+              {/* Export Buttons - Only for text content */}
+              {!isImage && (
+                <ExportButtons 
+                  content={message.content} 
+                  contentType={message.contentType || 'general'} 
+                />
+              )}
             </motion.div>
           )}
         </div>

@@ -46,7 +46,7 @@ const LoginPage = () => {
             <Link to="/" className="inline-flex items-center space-x-3 mb-10 group">
               <img src="/logo.png" alt="Logo" className="h-10 w-10 object-contain drop-shadow-[0_0_8px_rgba(249,168,168,0.5)] transition-transform group-hover:scale-105" />
               <span className="text-xl font-heading font-bold text-white tracking-wide">
-                Synthetix<span className="text-peach">.AI</span>
+                Creo<span className="text-peach">.AI</span>
               </span>
             </Link>
             <h1 className="text-4xl font-heading font-bold text-white mb-3 tracking-tight">Welcome back</h1>
@@ -148,13 +148,13 @@ const LoginPage = () => {
             <div className="absolute inset-0 bg-peach/20 blur-[80px] rounded-full group-hover:bg-peach/30 transition-colors duration-700"></div>
             <img 
               src="/logo.png" 
-              alt="Synthetix AI Logo" 
+              alt="Creo AI Logo" 
               className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_25px_rgba(249,168,168,0.5)] transition-transform duration-700 hover:scale-105"
             />
           </div>
           
           <h2 className="text-4xl md:text-5xl font-heading font-bold text-white mb-4 tracking-tight">
-            Synthetix<span className="text-peach">.AI</span>
+            Creo<span className="text-peach">.AI</span>
           </h2>
           <p className="text-lg font-body text-text-secondary max-w-sm leading-relaxed">
             The premier AI content generation platform for forward-thinking teams and creators.

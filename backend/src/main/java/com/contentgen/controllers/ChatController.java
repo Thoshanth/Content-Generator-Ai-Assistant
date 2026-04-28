@@ -177,9 +177,19 @@ public class ChatController {
     public ResponseEntity<?> getSessions(Authentication authentication) {
         try {
             String userId = authentication.getName();
+            System.out.println("ChatController: Getting sessions for userId: " + userId);
+            
             List<ChatSessionDTO> sessions = chatService.getUserSessions(userId);
+            System.out.println("ChatController: Retrieved " + sessions.size() + " sessions");
+            
+            if (!sessions.isEmpty()) {
+                System.out.println("ChatController: First session sample: " + sessions.get(0));
+            }
+            
             return ResponseEntity.ok(sessions);
         } catch (Exception e) {
+            System.err.println("ChatController: Error getting sessions: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }

@@ -220,4 +220,81 @@ public class UserService {
             throw new RuntimeException("Error fetching user stats: " + e.getMessage(), e);
         }
     }
+    
+    /**
+     * Check if user has reached daily image generation limit
+     */
+    public boolean hasReachedDailyImageLimit(String userId, int dailyLimit) {
+        try {
+            User user = getUserById(userId);
+            
+            LocalDate today = LocalDate.now();
+            LocalDate lastImageDate = user.getLastImageDate() != null 
+                ? Instant.ofEpochSecond(user.getLastImageDate().getSeconds())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+                : null;
+            
+            // Reset counter if it's a new day
+            if (lastImageDate == null || !lastImageDate.equals(today)) {
+                user.setDailyImageCount(0);
+                user.setLastImageDate(Timestamp.now());
+                userRepository.save(user);
+                return false;
+            }
+            
+            return user.getDailyImageCount() >= dailyLimit;
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException("Error checking daily image limit: " + e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * Increment user's daily image generation count
+     */
+    public void incrementDailyImageCount(String userId) {
+        try {
+            User user = getUserById(userId);
+            
+            LocalDate today = LocalDate.now();
+            LocalDate lastImageDate = user.getLastImageDate() != null 
+                ? Instant.ofEpochSecond(user.getLastImageDate().getSeconds())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+                : null;
+            
+            // Reset counter if it's a new day
+            if (lastImageDate == null || !lastImageDate.equals(today)) {
+                user.setDailyImageCount(1);
+            } else {
+                user.setDailyImageCount(user.getDailyImageCount() + 1);
+            }
+            
+            user.setLastImageDate(Timestamp.now());
+            userRepository.save(user);
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException("Error incrementing image count: " + e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * Get user's daily image generation count
+     */
+    public int getDailyImageCount(String userId) {
+        User user = getUserById(userId);
+        
+        LocalDate today = LocalDate.now();
+        LocalDate lastImageDate = user.getLastImageDate() != null 
+            ? Instant.ofEpochSecond(user.getLastImageDate().getSeconds())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+            : null;
+        
+        // Reset counter if it's a new day
+        if (lastImageDate == null || !lastImageDate.equals(today)) {
+            return 0;
+        }
+        
+        return user.getDailyImageCount() != null ? user.getDailyImageCount() : 0;
+    }
 }

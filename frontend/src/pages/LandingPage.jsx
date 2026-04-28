@@ -117,7 +117,7 @@ const LandingPage = () => {
                 className="h-10 w-10 object-contain drop-shadow-[0_0_8px_rgba(249,168,168,0.5)]" 
               />
               <span className="text-xl font-heading font-bold text-white tracking-wide group-hover:text-peach transition-colors duration-300">
-                Synthetix<span className="text-white group-hover:text-peach">.AI</span>
+                Creo<span className="text-white group-hover:text-peach">.AI</span>
               </span>
             </Link>
             <div className="flex items-center space-x-6">
@@ -177,7 +177,7 @@ const LandingPage = () => {
             className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-surface-raised border border-peach/20 mb-8 backdrop-blur-md shadow-[0_0_20px_rgba(249,168,168,0.1)] hover:border-peach/50 transition-colors cursor-default"
           >
             <span className="w-2 h-2 rounded-full bg-peach animate-pulse shadow-[0_0_10px_rgba(249,168,168,1)]" />
-            <span className="text-xs font-body font-bold text-peach uppercase tracking-widest">Synthetix Core v5.0 Live</span>
+            <span className="text-xs font-body font-bold text-peach uppercase tracking-widest">Creo Core v5.0 Live</span>
           </motion.div>
           
           <motion.h1 
@@ -346,7 +346,7 @@ const LandingPage = () => {
             <div className="col-span-1 md:col-span-1">
               <div className="flex items-center space-x-3 mb-6">
                 <img src="/logo.png" alt="Logo" className="h-8 w-8 object-contain opacity-80" />
-                <span className="text-lg font-heading font-bold text-white">Synthetix<span className="text-peach">.AI</span></span>
+                <span className="text-lg font-heading font-bold text-white">Creo<span className="text-peach">.AI</span></span>
               </div>
               <p className="text-sm text-text-secondary font-body leading-relaxed max-w-xs">
                 The premier AI content generation platform for forward-thinking teams and creators.
@@ -380,7 +380,7 @@ const LandingPage = () => {
           </div>
           
           <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs font-body text-text-muted">
-            <p>&copy; {new Date().getFullYear()} Synthetix AI. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} Creo AI. All rights reserved.</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <span className="hover:text-text-secondary cursor-pointer transition-colors">Privacy Policy</span>
               <span className="hover:text-text-secondary cursor-pointer transition-colors">Terms of Service</span>

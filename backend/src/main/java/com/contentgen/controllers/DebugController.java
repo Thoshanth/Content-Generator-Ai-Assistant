@@ -2,12 +2,16 @@ package com.contentgen.controllers;
 
 import com.contentgen.models.User;
 import com.contentgen.repositories.UserRepository;
+import com.contentgen.dto.ChatSessionDTO;
+import com.google.cloud.Timestamp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.List;
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -63,6 +67,30 @@ public class DebugController {
                     "passwordMatches", matches,
                     "userId", user.getId()
             ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+    
+    /**
+     * Test Timestamp serialization
+     */
+    @GetMapping("/test-timestamp")
+    public ResponseEntity<?> testTimestamp() {
+        try {
+            // Create a test ChatSessionDTO with Timestamp fields
+            ChatSessionDTO testSession = new ChatSessionDTO();
+            testSession.setId("test-session-123");
+            testSession.setUserId("test-user-456");
+            testSession.setTitle("Test Session");
+            testSession.setContentType("general");
+            testSession.setCreatedAt(Timestamp.now());
+            testSession.setUpdatedAt(Timestamp.now());
+            
+            // Return as list to match the actual API response format
+            List<ChatSessionDTO> sessions = Arrays.asList(testSession);
+            
+            return ResponseEntity.ok(sessions);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }

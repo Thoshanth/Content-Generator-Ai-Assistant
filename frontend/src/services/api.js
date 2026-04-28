@@ -190,16 +190,36 @@ export async function getAiProviders() {
 }
 
 /**
- * Get follow-up questions for content generation
- * @param {string} contentType - Type of content (resume, cover_letter, blog_post, etc.)
- * @param {string} initialContent - Initial user input (optional)
+ * Check if bot should ask follow-up questions
+ * @param {string} contentType - Type of content
+ * @param {string} userMessage - User's message
+ * @param {Array} conversationHistory - Previous messages
  * @param {string} userId - User ID (optional)
- * @returns {Promise} - Object with questions array and content_type
+ * @returns {Promise} - Object with should_ask boolean and reason
  */
-export async function getFollowUpQuestions(contentType, initialContent = '', userId = '') {
-  const response = await aiApi.post('/tools/followup-questions', {
+export async function checkShouldAskFollowUp(contentType, userMessage, conversationHistory = [], userId = '') {
+  const response = await aiApi.post('/followup/check', {
     content_type: contentType,
-    content: initialContent,
+    user_message: userMessage,
+    conversation_history: conversationHistory,
+    user_id: userId
+  })
+  return response.data
+}
+
+/**
+ * Generate bot follow-up questions message
+ * @param {string} contentType - Type of content
+ * @param {string} userMessage - User's message
+ * @param {Array} conversationHistory - Previous messages
+ * @param {string} userId - User ID (optional)
+ * @returns {Promise} - Object with message, content_type, and has_questions
+ */
+export async function generateBotFollowUp(contentType, userMessage, conversationHistory = [], userId = '') {
+  const response = await aiApi.post('/followup/generate', {
+    content_type: contentType,
+    user_message: userMessage,
+    conversation_history: conversationHistory,
     user_id: userId
   })
   return response.data

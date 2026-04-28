@@ -2,15 +2,20 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useChat } from '../context/ChatContext'
 import { useAuth } from '../context/AuthContext'
+import { useNotifications } from '../hooks/useNotifications'
 import Sidebar from '../components/chat/Sidebar'
 import ChatWindow from '../components/chat/ChatWindow'
 import InputBar from '../components/chat/InputBar'
+import ImageGenerator from '../components/chat/ImageGenerator'
 import ContentTypeSelector from '../components/chat/ContentTypeSelector'
 import ToneSelector from '../components/chat/ToneSelector'
 import LengthSelector from '../components/chat/LengthSelector'
 import LanguageSelector from '../components/chat/LanguageSelector'
+import DailyResetIndicator from '../components/chat/DailyResetIndicator'
+import NotificationDemo from '../components/ui/NotificationDemo'
 import toast from 'react-hot-toast'
-import { Settings } from 'lucide-react'
+import { Settings, Sparkles, Bell } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const ChatPage = () => {
   const [contentType, setContentType] = useState('general')
@@ -19,36 +24,53 @@ const ChatPage = () => {
   const [language, setLanguage] = useState('English')
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [showImageGenerator, setShowImageGenerator] = useState(false)
+  const [showNotificationDemo, setShowNotificationDemo] = useState(false)
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false)
   const { user, isAuthenticated } = useAuth()
-  const { loadSessions, sendMessage, currentSession, messages } = useChat()
+  const { loadSessions, sendMessage, currentSession, messages, addMessage } = useChat()
+  const { 
+    notifyError, 
+    notifySuccess, 
+    notifyWarning, 
+    notifyImageGenerated, 
+    notifyImageGenerationError,
+    notifyValidationError,
+    notifyAuthError
+  } = useNotifications()
   const navigate = useNavigate()
 
   useEffect(() => {
     if (isAuthenticated) {
-      loadSessions()
+      console.log('ChatPage: Loading sessions for authenticated user')
+      loadSessions().catch(err => {
+        console.error('ChatPage: Failed to load sessions:', err)
+        notifyError('Failed to load chat history', 'Connection Error')
+      })
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated, loadSessions])
 
   const handleSendMessage = async (prompt) => {
     if (!isAuthenticated) {
-      toast.error('Please login to send messages')
+      notifyAuthError()
       navigate('/login', { state: { from: '/chat' } })
       return
     }
 
     if (!prompt.trim()) {
-      toast.error('Please enter a message')
+      notifyValidationError('Please enter a message')
       return
     }
 
     // Check daily limit
     if (user?.dailyMessageCount >= 10) {
-      toast.error('Daily message limit reached (10/day)')
+      notifyWarning('Daily message limit reached (10/day)', 'Limit Reached')
       return
     }
 
     try {
       // Send with all v5.0 parameters
+      // The AI service will automatically check if follow-up questions should be asked
       await sendMessage(prompt, contentType, false, {
         tone,
         length,
@@ -56,7 +78,72 @@ const ChatPage = () => {
       })
     } catch (error) {
       console.error('Send message error:', error)
-      toast.error(error.response?.data?.error || error.message || 'Failed to send message')
+      notifyError(error.response?.data?.error || error.message || 'Failed to send message', 'Message Error')
+    }
+  }
+
+  const handleImageGenerate = async (imageRequest) => {
+    if (!isAuthenticated) {
+      notifyAuthError()
+      navigate('/login', { state: { from: '/chat' } })
+      return
+    }
+
+    setIsGeneratingImage(true)
+    
+    try {
+      // Add user message for image request
+      const userMessage = {
+        id: Date.now().toString(),
+        role: 'user',
+        content: `Generate image: ${imageRequest.prompt}`,
+        messageType: 'image_request',
+        createdAt: new Date().toISOString()
+      }
+      addMessage(userMessage)
+
+      // Call backend API
+      const response = await fetch('http://localhost:8080/api/images/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        },
+        body: JSON.stringify(imageRequest)
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || 'Failed to generate image')
+      }
+
+      const imageResponse = await response.json()
+
+      // Add assistant message with generated image
+      const assistantMessage = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: 'Generated image',
+        messageType: 'image',
+        imageUrl: imageResponse.imageUrl,
+        imagePrompt: imageResponse.prompt,
+        imageModel: imageResponse.modelUsed,
+        imageParameters: {
+          ...imageResponse.parameters,
+          generation_time: imageResponse.generationTime
+        },
+        createdAt: new Date().toISOString()
+      }
+      addMessage(assistantMessage)
+
+      notifyImageGenerated()
+      setShowImageGenerator(false)
+
+    } catch (error) {
+      console.error('Image generation error:', error)
+      notifyImageGenerationError(error.message || 'Failed to generate image')
+    } finally {
+      setIsGeneratingImage(false)
     }
   }
 
@@ -70,33 +157,71 @@ const ChatPage = () => {
         {/* Header */}
         <div className="bg-bg border-b border-border px-6 py-4 flex-shrink-0">
           <div className="flex items-center justify-between mb-3">
-            <div>
-              <h1 className="text-xl md:text-2xl font-heading font-bold text-white">
-                {currentSession ? currentSession.title || 'Chat Session' : 'New Chat'}
-              </h1>
-              <p className="text-xs md:text-sm font-body text-text-secondary">
-                {isAuthenticated ? `${user?.dailyMessageCount || 0}/10 messages used today` : 'Login to save your conversations'}
-              </p>
+            <div className="flex-1">
+              <motion.h1 
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="text-xl md:text-2xl font-heading font-bold text-white flex items-center gap-2"
+              >
+                <Sparkles className="w-6 h-6 text-peach" />
+                {currentSession ? currentSession.title || 'Creo Chat' : 'Creo'}
+              </motion.h1>
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                className="text-xs md:text-sm font-body text-text-secondary"
+              >
+                {isAuthenticated ? 'AI-powered content generation and image creation at your fingertips' : 'Login to save your conversations'}
+              </motion.p>
             </div>
-            <div className="flex items-center space-x-2">
-              <button
+            <div className="flex items-center space-x-3">
+              {isAuthenticated && (
+                <DailyResetIndicator 
+                  dailyMessageCount={user?.dailyMessageCount || 0} 
+                  maxMessages={10} 
+                />
+              )}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setShowNotificationDemo(true)}
+                className="btn-icon flex items-center space-x-2 text-sm"
+              >
+                <Bell className="w-4 h-4" />
+                <span className="hidden md:inline">Notifications</span>
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05, rotate: 90 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setShowAdvanced(!showAdvanced)}
                 className="btn-icon flex items-center space-x-2 text-sm"
               >
                 <Settings className="w-4 h-4" />
                 <span className="hidden md:inline">{showAdvanced ? 'Hide' : 'Options'}</span>
-              </button>
+              </motion.button>
             </div>
           </div>
 
           {/* Content Type Selector - Always Visible */}
-          <div className="flex items-center space-x-4">
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center space-x-4"
+          >
             <ContentTypeSelector value={contentType} onChange={setContentType} />
-          </div>
+          </motion.div>
 
           {/* Advanced Options - Collapsible */}
           {showAdvanced && (
-            <div className="mt-4 pt-4 border-t border-border">
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="mt-4 pt-4 border-t border-border"
+            >
               <div className="flex flex-wrap items-center gap-4">
                 <ToneSelector value={tone} onChange={setTone} />
                 <LengthSelector value={length} onChange={setLength} />
@@ -109,7 +234,7 @@ const ChatPage = () => {
                   <strong> Language:</strong> <span className="text-peach">{language}</span>
                 </p>
               </div>
-            </div>
+            </motion.div>
           )}
         </div>
 
@@ -117,8 +242,32 @@ const ChatPage = () => {
         <ChatWindow messages={messages} />
 
         {/* Input Bar */}
-        <InputBar onSend={handleSendMessage} contentType={contentType} />
+        <InputBar 
+          onSend={handleSendMessage} 
+          onImageGenerate={() => setShowImageGenerator(true)}
+          contentType={contentType} 
+        />
       </div>
+
+      {/* Image Generator Modal */}
+      <AnimatePresence>
+        {showImageGenerator && (
+          <ImageGenerator
+            onGenerate={handleImageGenerate}
+            onClose={() => setShowImageGenerator(false)}
+            isGenerating={isGeneratingImage}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Notification Demo Modal */}
+      <AnimatePresence>
+        {showNotificationDemo && (
+          <NotificationDemo
+            onClose={() => setShowNotificationDemo(false)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

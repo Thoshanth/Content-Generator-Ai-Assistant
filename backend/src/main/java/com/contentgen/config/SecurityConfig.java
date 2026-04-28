@@ -38,6 +38,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/debug/**").permitAll()
+                        .requestMatchers("/api/images/debug-headers").permitAll()
+                        .requestMatchers("/api/images/*.png", "/api/images/*.jpg", "/api/images/*.jpeg").permitAll()
                         .requestMatchers("/api/health").permitAll()
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()

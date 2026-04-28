@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useCallback } from 'react'
 import { chatService } from '../services/chatService'
 
 const ChatContext = createContext(null)
@@ -9,23 +9,37 @@ export const ChatProvider = ({ children }) => {
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
 
-  const loadSessions = async () => {
+  const loadSessions = useCallback(async () => {
     try {
       setLoading(true)
+      console.log('ChatContext: Fetching sessions from API...')
       const data = await chatService.getSessions()
+      console.log('ChatContext: Received sessions data:', data)
+      console.log('ChatContext: Data type:', typeof data)
+      console.log('ChatContext: Is array:', Array.isArray(data))
+      
       if (Array.isArray(data)) {
+        console.log(`ChatContext: Setting ${data.length} sessions`)
+        console.log('ChatContext: First session sample:', data[0])
         setSessions(data)
       } else {
-        console.error('Expected array of sessions, received:', data)
+        console.error('ChatContext: Expected array of sessions, received:', data)
+        console.error('ChatContext: Data structure:', JSON.stringify(data, null, 2))
         setSessions([])
       }
     } catch (error) {
-      console.error('Failed to load sessions:', error)
+      console.error('ChatContext: Failed to load sessions:', error)
+      console.error('ChatContext: Error details:', error.response?.data || error.message)
+      console.error('ChatContext: Full error object:', error)
+      if (error.response) {
+        console.error('ChatContext: Response status:', error.response.status)
+        console.error('ChatContext: Response headers:', error.response.headers)
+      }
       setSessions([])
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
   const loadSession = async (sessionId) => {
     try {
@@ -201,6 +215,10 @@ export const ChatProvider = ({ children }) => {
     setMessages([])
   }
 
+  const addMessage = (message) => {
+    setMessages((prev) => [...prev, message])
+  }
+
   const value = {
     sessions,
     currentSession,
@@ -213,6 +231,7 @@ export const ChatProvider = ({ children }) => {
     deleteSession,
     deleteAllSessions,
     clearCurrentSession,
+    addMessage,
   }
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>

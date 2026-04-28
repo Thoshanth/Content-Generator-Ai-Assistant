@@ -4,6 +4,7 @@ from models.schemas import ChatRequest, ChatResponse
 from services.streaming import stream_response
 from services.model_router import get_provider_chain
 from services.ai_client import generate_content
+from services.followup_service import should_ask_followup_questions, generate_bot_followup_questions
 import json
 
 router = APIRouter()
@@ -20,6 +21,7 @@ async def chat(request: ChatRequest):
     - Conversation history context
     - Tone, length, and language customization
     - File uploads and custom instructions
+    - Automatic follow-up questions when needed
     """
     try:
         history = []
@@ -29,7 +31,31 @@ async def chat(request: ChatRequest):
                 for msg in request.conversation_history
             ]
         
-        # Generate content using AI client
+        # Check if bot should ask follow-up questions
+        should_ask_followup = await should_ask_followup_questions(
+            content_type=request.content_type.value,
+            user_message=request.prompt,
+            conversation_history=history
+        )
+        
+        # If bot should ask follow-up questions, generate them instead of regular content
+        if should_ask_followup:
+            followup_message = await generate_bot_followup_questions(
+                content_type=request.content_type.value,
+                user_message=request.prompt,
+                conversation_history=history,
+                user_id=request.user_id or ""
+            )
+            
+            return ChatResponse(
+                content=followup_message,
+                provider="followup_service",
+                model="question_generator",
+                word_count=len(followup_message.split()),
+                char_count=len(followup_message)
+            )
+        
+        # Generate regular content using AI client
         result = await generate_content(
             prompt=request.prompt,
             content_type=request.content_type.value,
@@ -65,6 +91,7 @@ async def chat_stream(request: ChatRequest):
     - Conversation history context
     - Tone, length, and language customization
     - File uploads and custom instructions
+    - Automatic follow-up questions when needed
     """
     try:
         async def event_generator():
@@ -76,6 +103,46 @@ async def chat_stream(request: ChatRequest):
                         for msg in request.conversation_history
                     ]
                 
+                # Check if bot should ask follow-up questions
+                should_ask_followup = await should_ask_followup_questions(
+                    content_type=request.content_type.value,
+                    user_message=request.prompt,
+                    conversation_history=history
+                )
+                
+                # If bot should ask follow-up questions, stream them
+                if should_ask_followup:
+                    followup_message = await generate_bot_followup_questions(
+                        content_type=request.content_type.value,
+                        user_message=request.prompt,
+                        conversation_history=history,
+                        user_id=request.user_id or ""
+                    )
+                    
+                    # Stream the follow-up message word by word
+                    words = followup_message.split()
+                    for i, word in enumerate(words):
+                        chunk_data = {
+                            "content": word + " ",
+                            "provider": "followup_service",
+                            "model": "question_generator",
+                            "done": i == len(words) - 1
+                        }
+                        yield f"data: {json.dumps(chunk_data)}\n\n"
+                    
+                    # Send final completion event
+                    final_data = {
+                        "content": "",
+                        "provider": "followup_service",
+                        "model": "question_generator",
+                        "done": True,
+                        "word_count": len(words),
+                        "char_count": len(followup_message)
+                    }
+                    yield f"data: {json.dumps(final_data)}\n\n"
+                    return
+                
+                # Stream regular content
                 async for chunk in stream_response(
                     prompt=request.prompt,
                     content_type=request.content_type.value,

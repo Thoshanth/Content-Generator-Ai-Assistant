@@ -41,13 +41,25 @@ public class ChatService {
      */
     public List<ChatSessionDTO> getUserSessions(String userId) {
         try {
+            System.out.println("ChatService: Fetching sessions for userId: " + userId);
             List<ChatSession> sessions = chatSessionRepository.findByUserIdOrderByUpdatedAtDesc(userId);
+            System.out.println("ChatService: Found " + sessions.size() + " raw sessions");
             
-            return sessions.stream()
+            List<ChatSessionDTO> sessionDTOs = sessions.stream()
                     .map(this::convertToSessionDTO)
                     .collect(Collectors.toList());
+            
+            System.out.println("ChatService: Converted to " + sessionDTOs.size() + " DTOs");
+            
+            return sessionDTOs;
         } catch (ExecutionException | InterruptedException e) {
+            System.err.println("ChatService: Error fetching sessions: " + e.getMessage());
+            e.printStackTrace();
             throw new RuntimeException("Error fetching user sessions: " + e.getMessage(), e);
+        } catch (Exception e) {
+            System.err.println("ChatService: Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Unexpected error fetching user sessions: " + e.getMessage(), e);
         }
     }
     
@@ -128,6 +140,17 @@ public class ChatService {
             return chatMessageRepository.save(message);
         } catch (ExecutionException | InterruptedException e) {
             throw new RuntimeException("Error saving assistant message: " + e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * Save any message to Firebase Firestore (generic method for image messages, etc.)
+     */
+    public ChatMessage saveMessage(ChatMessage message) {
+        try {
+            return chatMessageRepository.save(message);
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException("Error saving message: " + e.getMessage(), e);
         }
     }
     
@@ -226,6 +249,14 @@ public class ChatService {
         dto.setModelUsed(message.getModelUsed());
         dto.setTokensUsed(message.getTokensUsed());
         dto.setCreatedAt(message.getCreatedAt());
+        
+        // Handle image-related fields
+        dto.setMessageType(message.getMessageType());
+        dto.setImageUrl(message.getImageUrl());
+        dto.setImagePrompt(message.getImagePrompt());
+        dto.setImageModel(message.getImageModel());
+        dto.setImageParameters(message.getImageParameters());
+        
         return dto;
     }
 }
