@@ -23,11 +23,7 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route
               path="/chat"
-              element={
-                <ProtectedRoute>
-                  <ChatPage />
-                </ProtectedRoute>
-              }
+              element={<ChatPage />}
             />
             <Route
               path="/profile"

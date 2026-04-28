@@ -65,10 +65,10 @@ const ExportButtons = ({ content, contentType }) => {
   if (!content) return null
 
   return (
-    <div className="flex items-center space-x-2 mt-2">
+    <div className="flex items-center space-x-2 mt-2 font-body">
       <button
         onClick={handleCopy}
-        className="inline-flex items-center space-x-1 px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+        className="inline-flex items-center space-x-1 px-3 py-1 text-xs bg-surface-raised border border-white/10 hover:border-peach/50 text-white hover:text-peach rounded-lg transition-colors"
         title="Copy to clipboard"
       >
         {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
@@ -78,7 +78,7 @@ const ExportButtons = ({ content, contentType }) => {
       <button
         onClick={handleExportHTML}
         disabled={exporting}
-        className="inline-flex items-center space-x-1 px-3 py-1 text-xs bg-blue-100 hover:bg-blue-200 rounded-lg transition-colors disabled:opacity-50"
+        className="inline-flex items-center space-x-1 px-3 py-1 text-xs bg-surface-raised border border-white/10 hover:border-peach/50 text-white hover:text-peach rounded-lg transition-colors disabled:opacity-50"
         title="Export as HTML"
       >
         <FileCode className="w-3 h-3" />
@@ -88,7 +88,7 @@ const ExportButtons = ({ content, contentType }) => {
       <button
         onClick={handleExportPDF}
         disabled={exporting}
-        className="inline-flex items-center space-x-1 px-3 py-1 text-xs bg-red-100 hover:bg-red-200 rounded-lg transition-colors disabled:opacity-50"
+        className="inline-flex items-center space-x-1 px-3 py-1 text-xs bg-surface-raised border border-white/10 hover:border-peach/50 text-white hover:text-peach rounded-lg transition-colors disabled:opacity-50"
         title="Export as PDF"
       >
         <Download className="w-3 h-3" />
@@ -96,7 +96,7 @@ const ExportButtons = ({ content, contentType }) => {
       </button>
 
       {exporting && (
-        <span className="text-xs text-gray-500">Exporting...</span>
+        <span className="text-xs text-text-secondary animate-pulse">Exporting...</span>
       )}
     </div>
   )

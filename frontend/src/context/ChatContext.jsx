@@ -11,10 +11,19 @@ export const ChatProvider = ({ children }) => {
 
   const loadSessions = async () => {
     try {
+      setLoading(true)
       const data = await chatService.getSessions()
-      setSessions(data)
+      if (Array.isArray(data)) {
+        setSessions(data)
+      } else {
+        console.error('Expected array of sessions, received:', data)
+        setSessions([])
+      }
     } catch (error) {
       console.error('Failed to load sessions:', error)
+      setSessions([])
+    } finally {
+      setLoading(false)
     }
   }
 

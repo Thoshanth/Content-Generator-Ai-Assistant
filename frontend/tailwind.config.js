@@ -7,24 +7,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
-          DEFAULT: '#1D6CF2',
-          dark: '#0F4DC9',
-          light: '#E8F0FE',
-          accent: '#4A90F5',
-        },
-        surface: {
-          DEFAULT: '#F7F9FC',
-          dark: '#0D1117',
-        },
-        text: {
-          primary: '#1A1A2E',
-          secondary: '#5F6B7A',
-        },
-        border: '#E2E8F0',
+        bg:           '#000000',
+        surface:      '#0A0A0A',
+        'surface-raised': '#141414',
+        border:       '#222222',
+        peach:        '#F9A8A8',
+        'peach-hover':'#E59595',
+        'peach-subtle':'#4A2020',
+        'text-primary': '#FFFFFF',
+        'text-secondary': '#A0A0A0',
+        'text-muted': '#555555',
+        success:      '#4CAF50',
+        error:        '#FF5252',
       },
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', 'sans-serif'],
+        heading: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        body:    ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        code:    ['JetBrains Mono', 'monospace'],
       },
     },
   },

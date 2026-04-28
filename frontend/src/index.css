@@ -2,28 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+}
+
 @layer base {
   body {
-    @apply bg-surface text-text-primary;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", sans-serif;
+    @apply bg-bg text-text-primary font-body;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary hover:bg-primary-dark text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+    @apply bg-peach hover:bg-peach-hover text-black font-bold py-2 px-4 rounded-xl transition-colors duration-150;
   }
   
   .btn-secondary {
-    @apply bg-gray-200 hover:bg-gray-300 text-text-primary font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+    @apply bg-transparent hover:bg-peach/10 text-peach font-bold py-2 px-4 rounded-xl transition-colors duration-150;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent hover:bg-surface-raised text-text-secondary font-bold py-2 px-4 rounded-xl transition-colors duration-150;
+  }
+
+  .btn-danger {
+    @apply bg-transparent hover:bg-error/10 text-error font-bold py-2 px-4 rounded-xl transition-colors duration-150;
+  }
+
+  .btn-icon {
+    @apply bg-surface-raised hover:bg-border text-text-secondary hover:text-peach p-2 rounded-xl transition-colors duration-150;
   }
   
   .input-field {
-    @apply w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+    @apply w-full px-4 py-2 bg-surface-raised border border-border text-text-primary rounded-xl focus:outline-none focus:ring-2 focus:ring-peach focus:border-transparent font-body;
   }
   
   .card {
-    @apply bg-white rounded-lg shadow-sm border border-border p-6;
+    @apply bg-surface rounded-2xl border border-border p-6;
   }
 }
 
@@ -34,14 +58,24 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #0A0A0A;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
+  background: #222222;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #4A2020;
+}
+
+/* Override WebKit autofill styling for dark theme */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #141414 inset !important;
+  -webkit-text-fill-color: white !important;
+  caret-color: white !important;
 }

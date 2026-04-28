@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useChat } from '../context/ChatContext'
 import { useAuth } from '../context/AuthContext'
 import Sidebar from '../components/chat/Sidebar'
@@ -18,14 +19,23 @@ const ChatPage = () => {
   const [language, setLanguage] = useState('English')
   const [showAdvanced, setShowAdvanced] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const { user } = useAuth()
+  const { user, isAuthenticated } = useAuth()
   const { loadSessions, sendMessage, currentSession, messages } = useChat()
+  const navigate = useNavigate()
 
   useEffect(() => {
-    loadSessions()
-  }, [])
+    if (isAuthenticated) {
+      loadSessions()
+    }
+  }, [isAuthenticated])
 
   const handleSendMessage = async (prompt) => {
+    if (!isAuthenticated) {
+      toast.error('Please login to send messages')
+      navigate('/login', { state: { from: '/chat' } })
+      return
+    }
+
     if (!prompt.trim()) {
       toast.error('Please enter a message')
       return
@@ -44,7 +54,6 @@ const ChatPage = () => {
         length,
         language
       })
-      toast.success('Message sent!')
     } catch (error) {
       console.error('Send message error:', error)
       toast.error(error.response?.data?.error || error.message || 'Failed to send message')
@@ -52,28 +61,32 @@ const ChatPage = () => {
   }
 
   return (
-    <div className="flex h-screen bg-surface">
+    <div className="flex h-screen bg-bg overflow-hidden">
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col relative w-full">
         {/* Header */}
-        <div className="bg-white border-b border-border px-6 py-4">
+        <div className="bg-bg border-b border-border px-6 py-4 flex-shrink-0">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <h1 className="text-2xl font-bold text-text-primary">AI Content Generator</h1>
-              <p className="text-sm text-text-secondary">
-                {user?.dailyMessageCount || 0}/10 messages used today
+              <h1 className="text-xl md:text-2xl font-heading font-bold text-white">
+                {currentSession ? currentSession.title || 'Chat Session' : 'New Chat'}
+              </h1>
+              <p className="text-xs md:text-sm font-body text-text-secondary">
+                {isAuthenticated ? `${user?.dailyMessageCount || 0}/10 messages used today` : 'Login to save your conversations'}
               </p>
             </div>
-            <button
-              onClick={() => setShowAdvanced(!showAdvanced)}
-              className="inline-flex items-center space-x-2 px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-            >
-              <Settings className="w-4 h-4" />
-              <span>{showAdvanced ? 'Hide' : 'Show'} Options</span>
-            </button>
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                className="btn-icon flex items-center space-x-2 text-sm"
+              >
+                <Settings className="w-4 h-4" />
+                <span className="hidden md:inline">{showAdvanced ? 'Hide' : 'Options'}</span>
+              </button>
+            </div>
           </div>
 
           {/* Content Type Selector - Always Visible */}
@@ -83,17 +96,17 @@ const ChatPage = () => {
 
           {/* Advanced Options - Collapsible */}
           {showAdvanced && (
-            <div className="mt-3 pt-3 border-t border-border">
+            <div className="mt-4 pt-4 border-t border-border">
               <div className="flex flex-wrap items-center gap-4">
                 <ToneSelector value={tone} onChange={setTone} />
                 <LengthSelector value={length} onChange={setLength} />
                 <LanguageSelector value={language} onChange={setLanguage} />
               </div>
-              <div className="mt-2 text-xs text-text-secondary">
+              <div className="mt-3 text-xs font-body text-text-muted">
                 <p>
-                  <strong>Tone:</strong> {tone} • 
-                  <strong> Length:</strong> {length} • 
-                  <strong> Language:</strong> {language}
+                  <strong>Tone:</strong> <span className="text-peach">{tone}</span> &bull; 
+                  <strong> Length:</strong> <span className="text-peach">{length}</span> &bull; 
+                  <strong> Language:</strong> <span className="text-peach">{language}</span>
                 </p>
               </div>
             </div>
