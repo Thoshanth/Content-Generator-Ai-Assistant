@@ -939,7 +939,7 @@ Contributions welcome! Please:
 
 - **Issues**: Open a GitHub issue
 - **Discussions**: Use GitHub Discussions
-- **Email**: your-email@example.com
+- **Email**: mthoshanthreddy@gmail.com
 
 ## 🎉 Acknowledgments
 
