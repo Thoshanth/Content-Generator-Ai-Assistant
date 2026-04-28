@@ -2,6 +2,9 @@ def get_system_prompt(content_type: str) -> str:
     """
     Returns appropriate system prompt based on content type.
     """
+    # Import resume prompt
+    from prompts.resume_template import RESUME_SYSTEM_PROMPT
+    
     prompts = {
         "blog_post": """You are an expert blog writer and content strategist. 
 Generate SEO-optimized, engaging blog posts with:
@@ -45,6 +48,21 @@ Generate compelling ad copy with:
 - Concise and punchy language
 
 Focus on persuasion and conversion optimization.""",
+
+        "resume": RESUME_SYSTEM_PROMPT,
+
+        "cover_letter": """You are an expert career coach and cover letter writer.
+Generate compelling, personalized cover letters with:
+- Professional header with contact information
+- Engaging opening paragraph that grabs attention
+- 2-3 body paragraphs highlighting relevant experience and achievements
+- Specific examples with quantified results
+- Clear connection between candidate's skills and job requirements
+- Enthusiastic closing with call-to-action
+- Professional sign-off
+
+Use a confident, professional tone. Avoid clichés and generic statements.
+Focus on what the candidate can offer the company, not just what they want.""",
 
         "general": """You are a helpful AI assistant specialized in content generation.
 Provide clear, accurate, and well-structured responses.

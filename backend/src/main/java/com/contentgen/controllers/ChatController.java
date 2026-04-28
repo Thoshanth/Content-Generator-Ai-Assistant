@@ -79,6 +79,12 @@ public class ChatController {
             aiRequest.setPrompt(request.getPrompt());
             aiRequest.setContentType(request.getContentType());
             aiRequest.setUserId(userId);
+            aiRequest.setTone(request.getTone());
+            aiRequest.setLength(request.getLength());
+            aiRequest.setLanguage(request.getLanguage());
+            aiRequest.setRegenerate(request.getRegenerate());
+            aiRequest.setCustomInstructions(request.getCustomInstructions());
+            aiRequest.setUploadedText(request.getUploadedText());
             
             AIResponse aiResponse = aiProxyService.generateContent(aiRequest, conversationHistory);
             
@@ -87,21 +93,23 @@ public class ChatController {
                     session.getId(),
                     userId,
                     aiResponse.getContent(),
-                    aiResponse.getModelUsed(),
-                    aiResponse.getTokensUsed()
+                    aiResponse.getModel(),
+                    aiResponse.getWordCount() // Use word count as token approximation
             );
             
             // Increment user's daily message count in database
             userService.incrementDailyMessageCount(userId);
             
-            // Return response
-            ChatResponse response = new ChatResponse(
-                    session.getId(),
-                    aiResponse.getContent(),
-                    aiResponse.getModelUsed(),
-                    aiResponse.getTokensUsed(),
-                    assistantMessage.getId()
-            );
+            // Return response with v5.0 metadata
+            ChatResponse response = new ChatResponse();
+            response.setSessionId(session.getId());
+            response.setContent(aiResponse.getContent());
+            response.setModelUsed(aiResponse.getModel());
+            response.setTokensUsed(aiResponse.getWordCount()); // Use word count as token approximation
+            response.setMessageId(assistantMessage.getId());
+            response.setProvider(aiResponse.getProvider());
+            response.setWordCount(aiResponse.getWordCount());
+            response.setCharCount(aiResponse.getCharCount());
             
             return ResponseEntity.ok(response);
             
@@ -149,6 +157,12 @@ public class ChatController {
         aiRequest.setPrompt(request.getPrompt());
         aiRequest.setContentType(request.getContentType());
         aiRequest.setUserId(userId);
+        aiRequest.setTone(request.getTone());
+        aiRequest.setLength(request.getLength());
+        aiRequest.setLanguage(request.getLanguage());
+        aiRequest.setRegenerate(request.getRegenerate());
+        aiRequest.setCustomInstructions(request.getCustomInstructions());
+        aiRequest.setUploadedText(request.getUploadedText());
         
         // Increment daily message count in database
         userService.incrementDailyMessageCount(userId);

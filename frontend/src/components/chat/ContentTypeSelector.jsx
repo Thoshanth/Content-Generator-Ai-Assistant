@@ -1,4 +1,4 @@
-import { FileText, Mail, Share2, Megaphone, MessageCircle } from 'lucide-react'
+import { FileText, Mail, Share2, Megaphone, MessageCircle, Code, FileCode, Video, Package, BookOpen, Twitter, Briefcase } from 'lucide-react'
 
 const ContentTypeSelector = ({ value, onChange }) => {
   const contentTypes = [
@@ -7,6 +7,13 @@ const ContentTypeSelector = ({ value, onChange }) => {
     { value: 'email', label: 'Email', icon: Mail },
     { value: 'social_media', label: 'Social Media', icon: Share2 },
     { value: 'ad_copy', label: 'Ad Copy', icon: Megaphone },
+    { value: 'tweet_thread', label: 'Tweet Thread', icon: Twitter },
+    { value: 'resume', label: 'Resume', icon: Briefcase },
+    { value: 'cover_letter', label: 'Cover Letter', icon: FileText },
+    { value: 'youtube_script', label: 'YouTube Script', icon: Video },
+    { value: 'product_desc', label: 'Product Description', icon: Package },
+    { value: 'essay', label: 'Essay', icon: BookOpen },
+    { value: 'code_explainer', label: 'Code Explainer', icon: Code },
   ]
 
   return (

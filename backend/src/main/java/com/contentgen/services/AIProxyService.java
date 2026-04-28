@@ -41,12 +41,23 @@ public class AIProxyService {
                 })
                 .collect(Collectors.toList());
         
-        // Build request payload
+        // Build request payload with v5.0 features
         Map<String, Object> payload = new HashMap<>();
         payload.put("prompt", request.getPrompt());
         payload.put("content_type", request.getContentType());
         payload.put("conversation_history", history);
         payload.put("user_id", request.getUserId());
+        payload.put("tone", request.getTone());
+        payload.put("length", request.getLength());
+        payload.put("language", request.getLanguage());
+        payload.put("regenerate", request.getRegenerate());
+        
+        if (request.getCustomInstructions() != null) {
+            payload.put("custom_instructions", request.getCustomInstructions());
+        }
+        if (request.getUploadedText() != null) {
+            payload.put("uploaded_text", request.getUploadedText());
+        }
         
         // Call Python service
         return webClient.post()
@@ -77,12 +88,23 @@ public class AIProxyService {
                 })
                 .collect(Collectors.toList());
         
-        // Build request payload
+        // Build request payload with v5.0 features
         Map<String, Object> payload = new HashMap<>();
         payload.put("prompt", request.getPrompt());
         payload.put("content_type", request.getContentType());
         payload.put("conversation_history", history);
         payload.put("user_id", request.getUserId());
+        payload.put("tone", request.getTone());
+        payload.put("length", request.getLength());
+        payload.put("language", request.getLanguage());
+        payload.put("regenerate", request.getRegenerate());
+        
+        if (request.getCustomInstructions() != null) {
+            payload.put("custom_instructions", request.getCustomInstructions());
+        }
+        if (request.getUploadedText() != null) {
+            payload.put("uploaded_text", request.getUploadedText());
+        }
         
         // Call Python service with streaming
         return webClient.post()

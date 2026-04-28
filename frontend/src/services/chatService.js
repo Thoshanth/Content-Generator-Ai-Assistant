@@ -1,18 +1,21 @@
 import api from './api'
 
 export const chatService = {
-  async sendMessage(prompt, contentType, sessionId = null, sessionTitle = null) {
+  async sendMessage(prompt, contentType, sessionId = null, tone = 'professional', length = 'auto', language = 'English', sessionTitle = null) {
     const response = await api.post('/chat/message', {
       prompt,
       contentType,
       sessionId,
       sessionTitle,
+      tone,
+      length,
+      language,
     })
     return response.data
   },
 
-  async sendMessageStream(prompt, contentType, sessionId = null, onChunk) {
-    const token = localStorage.getItem('accessToken')  // ✅ Use new token storage
+  async sendMessageStream(prompt, contentType, sessionId = null, tone = 'professional', length = 'auto', language = 'English', onChunk) {
+    const token = localStorage.getItem('accessToken')
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api'
     
     const response = await fetch(`${API_BASE_URL}/chat/message/stream`, {
@@ -25,6 +28,9 @@ export const chatService = {
         prompt,
         contentType,
         sessionId,
+        tone,
+        length,
+        language,
       }),
     })
 

@@ -7,9 +7,22 @@ import lombok.Data;
 public class AIResponse {
     private String content;
     
-    @JsonProperty("model_used")
-    private String modelUsed;
+    // AI Service v5.0 fields
+    private String provider;
+    private String model;
     
-    @JsonProperty("tokens_used")
-    private Integer tokensUsed;
+    @JsonProperty("word_count")
+    private Integer wordCount;
+    
+    @JsonProperty("char_count")
+    private Integer charCount;
+    
+    // Backward compatibility - map model to modelUsed
+    public String getModelUsed() {
+        return model;
+    }
+    
+    public void setModelUsed(String modelUsed) {
+        this.model = modelUsed;
+    }
 }

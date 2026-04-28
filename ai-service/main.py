@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import chat
+from routers import chat, tools, generate
 import uvicorn
 
 app = FastAPI(
     title="AI Content Generator Service",
     description="Python FastAPI service for AI content generation using multiple providers (Groq, Gemini, TogetherAI, DeepSeek)",
-    version="2.0.0"
+    version="5.0.0"
 )
 
 # CORS configuration
@@ -20,6 +20,8 @@ app.add_middleware(
 
 # Include routers
 app.include_router(chat.router, prefix="/chat", tags=["chat"])
+app.include_router(tools.router, tags=["tools"])
+app.include_router(generate.router, tags=["generate"])
 
 @app.get("/")
 async def root():

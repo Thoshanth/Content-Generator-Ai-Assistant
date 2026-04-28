@@ -1,18 +1,10 @@
-import { User, Bot, Copy, Check } from 'lucide-react'
+import { User, Bot } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
-import { useState } from 'react'
-import toast from 'react-hot-toast'
+import ProviderIndicator from './ProviderIndicator'
+import ExportButtons from './ExportButtons'
 
 const MessageBubble = ({ message }) => {
-  const [copied, setCopied] = useState(false)
   const isUser = message.role === 'user'
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(message.content)
-    setCopied(true)
-    toast.success('Copied to clipboard')
-    setTimeout(() => setCopied(false), 2000)
-  }
 
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
@@ -48,28 +40,34 @@ const MessageBubble = ({ message }) => {
             )}
           </div>
 
-          {/* Message Meta */}
+          {/* Message Meta - AI Messages Only */}
           {!isUser && !message.streaming && (
-            <div className="flex items-center space-x-2 mt-2 text-xs text-text-secondary">
-              {message.modelUsed && (
-                <span className="px-2 py-1 bg-gray-100 rounded">
-                  {message.modelUsed.split('/')[1]?.split(':')[0] || 'AI'}
-                </span>
-              )}
-              {message.tokensUsed && (
-                <span>{message.tokensUsed} tokens</span>
-              )}
-              <button
-                onClick={handleCopy}
-                className="p-1 hover:bg-gray-100 rounded"
-                title="Copy to clipboard"
-              >
-                {copied ? (
-                  <Check className="w-4 h-4 text-green-500" />
-                ) : (
-                  <Copy className="w-4 h-4" />
+            <div className="mt-2 space-y-2">
+              {/* Provider Info */}
+              <div className="flex items-center space-x-2 text-xs">
+                {message.provider && (
+                  <ProviderIndicator 
+                    provider={message.provider} 
+                    model={message.modelUsed} 
+                  />
                 )}
-              </button>
+                {message.wordCount && (
+                  <span className="text-text-secondary">
+                    {message.wordCount} words
+                  </span>
+                )}
+                {message.tokensUsed && (
+                  <span className="text-text-secondary">
+                    • {message.tokensUsed} tokens
+                  </span>
+                )}
+              </div>
+
+              {/* Export Buttons */}
+              <ExportButtons 
+                content={message.content} 
+                contentType={message.contentType || 'general'} 
+              />
             </div>
           )}
         </div>

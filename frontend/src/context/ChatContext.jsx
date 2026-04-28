@@ -44,7 +44,9 @@ export const ChatProvider = ({ children }) => {
     }
   }
 
-  const sendMessage = async (prompt, contentType, useStreaming = false) => {
+  const sendMessage = async (prompt, contentType, useStreaming = false, options = {}) => {
+    const { tone = 'professional', length = 'auto', language = 'English' } = options
+
     const userMessage = {
       id: Date.now(),
       role: 'user',
@@ -70,6 +72,9 @@ export const ChatProvider = ({ children }) => {
           prompt,
           contentType,
           currentSession?.id,
+          tone,
+          length,
+          language,
           (chunk) => {
             // Handle different chunk formats
             if (chunk.chunk) {
@@ -119,7 +124,10 @@ export const ChatProvider = ({ children }) => {
         const response = await chatService.sendMessage(
           prompt,
           contentType,
-          currentSession?.id
+          currentSession?.id,
+          tone,
+          length,
+          language
         )
 
         const assistantMessage = {
@@ -128,6 +136,10 @@ export const ChatProvider = ({ children }) => {
           content: response.content,
           modelUsed: response.modelUsed,
           tokensUsed: response.tokensUsed,
+          provider: response.provider,
+          wordCount: response.wordCount,
+          charCount: response.charCount,
+          contentType: contentType,
           createdAt: new Date().toISOString(),
         }
 
