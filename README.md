@@ -1,6 +1,6 @@
 # 🚀 Creo - AI Content Generation Platform
 
-> **A sophisticated, enterprise-grade AI content generation platform with intelligent multi-provider routing, real-time streaming, and professional-grade export capabilities.**
+> **A sophisticated, enterprise-grade AI content generation platform with intelligent multi-provider routing, real-time streaming, image generation, and professional-grade export capabilities.**
 
 <div align="center">
 
@@ -13,56 +13,120 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](http://makeapullrequest.com)
 
+[Features](#-features) • [Architecture](#-architecture) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [API Reference](#-api-reference)
+
 </div>
 
 ---
 
-## 🌟 **What Makes Creo Special**
+## 📋 Table of Contents
 
-### 🧠 **Intelligent AI Routing**
-- **4 AI Providers** with smart routing: Groq, Gemini, Together AI, DeepSeek
-- **Content-Aware Selection**: Each content type routed to optimal provider
-- **Automatic Fallback**: Seamless provider switching on rate limits
-- **Zero Downtime**: Always available with intelligent degradation
-
-### 🎨 **12 Professional Content Types**
-- **Blog Posts** → Gemini (structured, SEO-optimized)
-- **Resumes** → Together AI (ATS-friendly, technical accuracy)
-- **Social Media** → Groq (creative, fast generation)
-- **Code Explanations** → Together AI (technical precision)
-- **Emails, Cover Letters, Essays** → Gemini (professional tone)
-- **Ad Copy, Product Descriptions** → Groq (persuasive, creative)
-- **YouTube Scripts, Tweet Threads** → Groq (engaging, viral)
-
-### ⚡ **Real-Time Experience**
-- **Server-Sent Events (SSE)** streaming for word-by-word generation
-- **Sub-second response times** with intelligent caching
-- **Live notifications** system with top-left positioning
-- **Real-time usage tracking** with midnight reset countdown
-
-### 🎯 **Advanced Customization**
-- **7 Tone Options**: Professional, Casual, Formal, Persuasive, Friendly, Witty, Empathetic
-- **4 Length Settings**: Short, Medium, Long, Auto-optimized
-- **11 Languages**: English, Hindi, Telugu, Spanish, French, German, Portuguese, Arabic, Japanese, Chinese, Korean
-- **Follow-up Questions**: Context-aware suggestions for each content type
-
-### 📄 **Professional Export Suite**
-- **PDF Generation**: Server-side rendering with WeasyPrint
-- **Format Conversion**: Markdown → HTML → Plain Text
-- **Resume Templates**: ATS-optimized, professional styling
-- **Cover Letter Templates**: Clean, modern layouts
-- **Bulk Export**: Multiple formats simultaneously
+- [Overview](#-overview)
+- [Features](#-features)
+- [Architecture](#-architecture)
+- [Technology Stack](#-technology-stack)
+- [Prerequisites](#-prerequisites)
+- [Quick Start](#-quick-start)
+- [Project Structure](#-project-structure)
+- [Configuration](#-configuration)
+- [API Reference](#-api-reference)
+- [Usage Examples](#-usage-examples)
+- [Development](#-development)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
-## 🏗️ **System Architecture**
+## 🌟 Overview
+
+**Creo** is a production-ready AI content generation platform that combines the power of multiple AI providers (Groq, Gemini, Together AI, DeepSeek) with intelligent routing, real-time streaming, and professional export capabilities. Built with modern technologies and best practices, it offers a seamless experience for generating 12+ types of professional content.
+
+### 🎯 Key Highlights
+
+- **🧠 Intelligent AI Routing**: Content-aware provider selection with automatic fallback
+- **⚡ Real-Time Streaming**: Word-by-word generation using Server-Sent Events (SSE)
+- **🎨 Image Generation**: Stable Diffusion integration for AI-powered images
+- **📄 Professional Exports**: PDF, HTML, Markdown with ATS-optimized templates
+- **🔒 Enterprise Security**: JWT authentication, rate limiting, Firebase integration
+- **🌍 Multi-Language**: Support for 11 languages including English, Hindi, Spanish, Japanese
+- **💬 Smart Follow-ups**: Context-aware question suggestions for each content type
+- **📊 Usage Analytics**: Real-time tracking with daily reset countdown
+
+---
+
+## ✨ Features
+
+### 🎨 Content Generation (12 Types)
+
+| Content Type | AI Provider | Optimized For |
+|-------------|-------------|---------------|
+| **Blog Posts** | Gemini | SEO-optimized, structured content |
+| **Resumes** | Together AI | ATS-friendly, technical accuracy |
+| **Cover Letters** | Gemini | Professional tone, persuasive |
+| **Social Media** | Groq | Creative, engaging, viral |
+| **Emails** | Gemini | Professional, clear communication |
+| **Ad Copy** | Groq | Persuasive, conversion-focused |
+| **Tweet Threads** | Groq | Engaging, shareable |
+| **YouTube Scripts** | Groq | Entertaining, structured |
+| **Product Descriptions** | Groq | Compelling, benefit-driven |
+| **Essays** | Gemini | Academic, well-researched |
+| **Code Explanations** | Together AI | Technical precision, clarity |
+| **General Content** | DeepSeek | Versatile, balanced |
+
+### 🎛️ Advanced Customization
+
+**7 Tone Options:**
+- Professional • Casual • Formal • Persuasive • Friendly • Witty • Empathetic
+
+**4 Length Settings:**
+- Short (100-300 words) • Medium (300-800 words) • Long (800+ words) • Auto-optimized
+
+**11 Languages:**
+- English • Hindi • Telugu • Spanish • French • German • Portuguese • Arabic • Japanese • Chinese (Simplified) • Korean
+
+### 🖼️ Image Generation
+
+- **Stable Diffusion** integration for AI-powered image creation
+- Multiple style presets and customization options
+- Secure image storage and retrieval
+- Rate limiting (10 images/day for free tier)
+
+### 📤 Export Capabilities
+
+- **PDF Export**: ATS-optimized for resumes/cover letters with professional styling
+- **HTML Export**: Responsive, styled, copy-ready
+- **Markdown Export**: Clean formatting, developer-friendly
+- **Plain Text**: No formatting, social media ready
+
+### 🔐 Security & Authentication
+
+- JWT-based authentication (access + refresh tokens)
+- BCrypt password hashing
+- Firebase Firestore integration
+- Rate limiting (10 messages/day free tier)
+- CORS protection
+- Input validation and sanitization
+
+### 💬 Chat Features
+
+- Real-time streaming responses
+- Session management with date-based grouping
+- Chat history persistence
+- Context-aware follow-up questions
+- Message regeneration with variety
+- Conversation export
+
+---
+
+## 🏗️ Architecture
 
 ```mermaid
 graph TB
     subgraph "Frontend Layer"
         A[React 18 + Vite]
         B[Framer Motion Animations]
-        C[Tailwind CSS + Custom Theme]
+        C[Tailwind CSS Styling]
         D[Real-time Notifications]
     end
     
@@ -78,12 +142,13 @@ graph TB
         J[Gemini - Structure & Professional]
         K[Together AI - Technical & Reasoning]
         L[DeepSeek - Universal Fallback]
+        M[Stable Diffusion - Image Generation]
     end
     
     subgraph "Data Layer"
-        M[Firebase Firestore]
-        N[User Profiles & Sessions]
-        O[Chat History & Analytics]
+        N[Firebase Firestore]
+        O[User Profiles & Sessions]
+        P[Chat History & Analytics]
     end
     
     A --> E
@@ -92,863 +157,764 @@ graph TB
     F --> J
     F --> K
     F --> L
-    E --> M
+    F --> M
+    E --> N
     
     style A fill:#61DAFB,stroke:#333,stroke-width:2px,color:#000
     style E fill:#6DB33F,stroke:#333,stroke-width:2px,color:#fff
     style F fill:#009688,stroke:#333,stroke-width:2px,color:#fff
-    style M fill:#FFCA28,stroke:#333,stroke-width:2px,color:#000
+    style N fill:#FFCA28,stroke:#333,stroke-width:2px,color:#000
 ```
 
-### **Port Configuration**
-- **Frontend**: `http://localhost:5173` (Vite Dev Server)
-- **Backend API**: `http://localhost:8080` (Spring Boot)
-- **AI Service**: `http://localhost:8000` (FastAPI)
-- **Database**: Firebase Firestore (Cloud)
+### System Flow
+
+1. **User Request** → Frontend (React)
+2. **Authentication** → Backend (Spring Boot) validates JWT
+3. **Rate Limiting** → Backend checks daily usage limits
+4. **AI Routing** → AI Service (FastAPI) selects optimal provider
+5. **Content Generation** → AI Provider generates content
+6. **Streaming Response** → SSE streams back to frontend
+7. **Data Persistence** → Firebase Firestore stores chat history
 
 ---
 
-## � **Quick Start Guide**
+## 🛠️ Technology Stack
 
-### **Prerequisites**
+### Frontend
+- **React 18.2** - Modern UI library with hooks
+- **Vite** - Lightning-fast build tool
+- **Framer Motion** - Smooth animations
+- **Tailwind CSS** - Utility-first styling
+- **Axios** - HTTP client
+- **React Router** - Client-side routing
+- **React Hot Toast** - Notifications
+- **React Markdown** - Markdown rendering
+- **Lucide React** - Icon library
+
+### Backend
+- **Spring Boot 3.2** - Enterprise Java framework
+- **Java 17** - LTS version
+- **Spring Security** - Authentication & authorization
+- **Firebase Admin SDK** - Firestore integration
+- **JJWT** - JWT token handling
+- **WebFlux** - Reactive programming
+- **Maven** - Dependency management
+- **Lombok** - Boilerplate reduction
+
+### AI Service
+- **FastAPI** - Modern Python web framework
+- **Python 3.10+** - Programming language
+- **Pydantic** - Data validation
+- **Uvicorn** - ASGI server
+- **Groq SDK** - Groq API integration
+- **Google Generative AI** - Gemini integration
+- **Together AI SDK** - Together API integration
+- **OpenAI SDK** - DeepSeek integration
+- **Replicate** - Stable Diffusion integration
+- **WeasyPrint** - PDF generation
+- **Markdown** - Text processing
+
+### Database & Storage
+- **Firebase Firestore** - NoSQL cloud database
+- **Local File Storage** - Generated images
+
+---
+
+## 📦 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
 - **Node.js** 18+ and npm
 - **Java** 17+ (OpenJDK recommended)
 - **Maven** 3.6+
 - **Python** 3.10+
-- **Firebase Account** (free tier)
-- **AI Provider API Keys** (free tiers available)
+- **Git** (for cloning the repository)
 
-### **⚡ One-Command Setup**
+### Required API Keys (All have free tiers)
 
+1. **Firebase Account** - [Get Started](https://firebase.google.com/)
+2. **Groq API Key** - [Get Key](https://console.groq.com/)
+3. **Google Gemini API Key** - [Get Key](https://makersuite.google.com/app/apikey)
+4. **Together AI API Key** - [Get Key](https://api.together.xyz/)
+5. **DeepSeek API Key** - [Get Key](https://platform.deepseek.com/)
+6. **Replicate API Token** (Optional for images) - [Get Token](https://replicate.com/)
+
+---
+
+## 🚀 Quick Start
+
+### Option 1: Automated Setup (Recommended)
+
+**Linux/Mac:**
 ```bash
 # Clone the repository
-git clone https://github.com/Thoshanth/Content-Generator-Ai-Assistant.git
-cd Content-Generator-Ai-Assistant
+git clone https://github.com/yourusername/creo-ai-platform.git
+cd creo-ai-platform
 
-# Run the setup script (creates all .env files and installs dependencies)
-./setup.sh  # Linux/Mac
-# OR
-setup.bat   # Windows
+# Run automated setup
+chmod +x setup.sh
+./setup.sh
 ```
 
-### **🔧 Manual Setup**
+**Windows:**
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/creo-ai-platform.git
+cd creo-ai-platform
 
-#### **1. AI Service Setup**
+# Run automated setup
+setup.bat
+```
+
+The setup script will:
+- Create `.env` files with templates
+- Install all dependencies
+- Verify installations
+- Provide next steps
+
+### Option 2: Manual Setup
+
+#### 1. Clone the Repository
+```bash
+git clone https://github.com/yourusername/creo-ai-platform.git
+cd creo-ai-platform
+```
+
+#### 2. Setup AI Service
 ```bash
 cd ai-service
 
 # Create virtual environment
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# Activate virtual environment
+# Linux/Mac:
+source venv/bin/activate
+# Windows:
+venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Configure environment
+# Create .env file
 cp .env.example .env
-# Edit .env with your API keys (see Environment Variables section)
-
-# Start AI service
-python main.py
+# Edit .env and add your API keys
 ```
 
-#### **2. Backend Setup**
+#### 3. Setup Backend
 ```bash
 cd backend
 
-# Configure Firebase
-# Place your firebase-credentials.json in the backend directory
+# Create application.properties
+cp src/main/resources/application.properties.example src/main/resources/application.properties
+# Edit application.properties and configure Firebase
 
-# Configure application properties
-# Edit src/main/resources/application.properties
+# Add Firebase credentials
+# Place your firebase-credentials.json in backend/src/main/resources/
 
-# Run Spring Boot application
-./mvnw spring-boot:run  # Linux/Mac
-# OR
-mvnw.cmd spring-boot:run  # Windows
+# Install dependencies (Maven will handle this)
+./mvnw clean install
 ```
 
-#### **3. Frontend Setup**
+#### 4. Setup Frontend
 ```bash
 cd frontend
 
 # Install dependencies
 npm install
 
-# Configure environment
-echo "VITE_API_BASE_URL=http://localhost:8080/api" > .env
-echo "VITE_AI_SERVICE_URL=http://localhost:8000" >> .env
-
-# Start development server
-npm run dev
+# Create .env file
+cp .env.example .env
+# Edit .env if needed (defaults should work for local development)
 ```
 
-### **🎯 Access Points**
+---
+
+## 🎮 Running the Application
+
+You need **3 terminal windows** to run all services:
+
+### Terminal 1: AI Service
+```bash
+cd ai-service
+source venv/bin/activate  # Windows: venv\Scripts\activate
+python main.py
+```
+✅ Runs on: `http://localhost:8000`
+
+### Terminal 2: Backend
+```bash
+cd backend
+./mvnw spring-boot:run
+```
+✅ Runs on: `http://localhost:8080`
+
+### Terminal 3: Frontend
+```bash
+cd frontend
+npm run dev
+```
+✅ Runs on: `http://localhost:5173`
+
+### Access the Application
+
 - **Application**: http://localhost:5173
-- **API Documentation**: http://localhost:8000/docs
+- **API Documentation**: http://localhost:8000/docs (Swagger UI)
 - **Backend Health**: http://localhost:8080/actuator/health
 
 ---
 
-## 🎨 **Feature Showcase**
+## 📁 Project Structure
 
-### **🤖 Intelligent Content Generation**
-
-<table>
-<tr>
-<td width="50%">
-
-**Smart Provider Routing**
-- Content-aware AI selection
-- Automatic quality optimization
-- Zero-downtime fallback
-- Performance monitoring
-
-</td>
-<td width="50%">
-
-**Advanced Customization**
-- 7 professional tones
-- 4 length options
-- 11 language support
-- Context-aware suggestions
-
-</td>
-</tr>
-</table>
-
-### **💬 Modern Chat Experience**
-
-<table>
-<tr>
-<td width="50%">
-
-**Real-Time Features**
-- Word-by-word streaming
-- Live typing indicators
-- Instant notifications
-- Usage tracking with countdown
-
-</td>
-<td width="50%">
-
-**Smart Organization**
-- Date-based chat grouping
-- Intelligent search
-- Session management
-- Export capabilities
-
-</td>
-</tr>
-</table>
-
-### **📊 Professional Export Suite**
-
-| Format | Use Case | Features |
-|--------|----------|----------|
-| **PDF** | Resumes, Cover Letters | ATS-optimized, professional templates |
-| **HTML** | Web content, emails | Styled, responsive, copy-ready |
-| **Markdown** | Documentation, blogs | Clean formatting, developer-friendly |
-| **Plain Text** | Social media, SMS | Clean, no formatting |
-
-### **🎯 Content Type Specialization**
-
-<details>
-<summary><strong>📝 Professional Documents</strong></summary>
-
-- **Resumes**: ATS-optimized formatting, skill highlighting, experience structuring
-- **Cover Letters**: Company-specific customization, motivation articulation
-- **Essays**: Academic structure, argument development, citation support
-- **Emails**: Professional tone, clear CTAs, context awareness
-
-</details>
-
-<details>
-<summary><strong>📱 Digital Marketing</strong></summary>
-
-- **Social Media Posts**: Platform-specific optimization (LinkedIn, Twitter, Instagram)
-- **Ad Copy**: Conversion-focused, A/B testing variations, CTA optimization
-- **Product Descriptions**: Feature highlighting, benefit articulation, SEO optimization
-- **Tweet Threads**: Viral potential, engagement optimization, hashtag suggestions
-
-</details>
-
-<details>
-<summary><strong>🎬 Creative Content</strong></summary>
-
-- **Blog Posts**: SEO optimization, reader engagement, structured formatting
-- **YouTube Scripts**: Hook creation, retention optimization, call-to-action placement
-- **Code Explanations**: Technical accuracy, beginner-friendly, example-rich
-
-</details>
+```
+creo-ai-platform/
+│
+├── frontend/                      # React 18 + Vite Frontend
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── chat/             # Chat UI components
+│   │   │   │   ├── ChatInterface.jsx
+│   │   │   │   ├── MessageList.jsx
+│   │   │   │   ├── Sidebar.jsx
+│   │   │   │   └── FollowUpQuestions.jsx
+│   │   │   ├── ui/               # Reusable UI components
+│   │   │   └── layout/           # Layout components
+│   │   ├── context/              # React Context
+│   │   │   ├── AuthContext.jsx
+│   │   │   ├── ChatContext.jsx
+│   │   │   └── NotificationContext.jsx
+│   │   ├── pages/                # Main pages
+│   │   │   ├── ChatPage.jsx
+│   │   │   ├── LoginPage.jsx
+│   │   │   ├── RegisterPage.jsx
+│   │   │   └── ProfilePage.jsx
+│   │   ├── services/             # API integration
+│   │   │   ├── api.js
+│   │   │   ├── authService.js
+│   │   │   └── chatService.js
+│   │   ├── utils/                # Utility functions
+│   │   ├── App.jsx               # Main app component
+│   │   └── main.jsx              # Entry point
+│   ├── public/                   # Static assets
+│   ├── package.json
+│   └── vite.config.js
+│
+├── backend/                       # Spring Boot 3.2 Backend
+│   ├── src/main/java/com/contentgen/
+│   │   ├── controllers/          # REST endpoints
+│   │   │   ├── AuthController.java
+│   │   │   ├── ChatController.java
+│   │   │   ├── UserController.java
+│   │   │   └── ImageController.java
+│   │   ├── services/             # Business logic
+│   │   │   ├── AuthService.java
+│   │   │   ├── ChatService.java
+│   │   │   ├── UserService.java
+│   │   │   └── AIService.java
+│   │   ├── models/               # Data entities
+│   │   │   ├── User.java
+│   │   │   ├── ChatSession.java
+│   │   │   └── ChatMessage.java
+│   │   ├── dto/                  # Data transfer objects
+│   │   ├── config/               # Configuration
+│   │   │   ├── SecurityConfig.java
+│   │   │   ├── FirebaseConfig.java
+│   │   │   └── WebClientConfig.java
+│   │   ├── security/             # Security components
+│   │   │   ├── JwtFilter.java
+│   │   │   └── JwtUtil.java
+│   │   └── ContentGeneratorApplication.java
+│   ├── src/main/resources/
+│   │   ├── application.properties
+│   │   └── firebase-credentials.json
+│   ├── pom.xml
+│   └── run.sh / run.bat
+│
+├── ai-service/                    # FastAPI AI Service
+│   ├── routers/                  # API endpoints
+│   │   ├── chat.py               # Chat endpoints
+│   │   ├── generate.py           # Content generation
+│   │   ├── tools.py              # Export tools
+│   │   ├── followup.py           # Follow-up questions
+│   │   └── image.py              # Image generation
+│   ├── services/                 # Core logic
+│   │   ├── ai_client.py          # AI provider clients
+│   │   ├── ai_providers.py       # Provider configurations
+│   │   ├── model_router.py       # Intelligent routing
+│   │   ├── streaming.py          # SSE streaming
+│   │   ├── export_service.py     # Export functionality
+│   │   ├── pdf_exporter.py       # PDF generation
+│   │   ├── image_service.py      # Image generation
+│   │   └── followup_service.py   # Follow-up logic
+│   ├── prompts/                  # Prompt templates
+│   │   ├── templates.py          # Content templates
+│   │   ├── tone_modifiers.py     # Tone variations
+│   │   └── resume_template.py    # Resume prompts
+│   ├── models/                   # Pydantic schemas
+│   │   └── schemas.py
+│   ├── utils/                    # Utility functions
+│   ├── tests/                    # Test suite
+│   ├── generated_images/         # Image storage
+│   ├── main.py                   # FastAPI app
+│   ├── requirements.txt
+│   └── README.md
+│
+├── docs/                          # Documentation
+│   ├── API_DOCUMENTATION.md
+│   ├── SETUP_GUIDE.md
+│   ├── MIGRATION_GUIDE.md
+│   └── TESTING_GUIDE.md
+│
+├── .gitignore
+├── README.md
+└── LICENSE
+```
 
 ---
 
-## ⚙️ **Environment Configuration**
+## ⚙️ Configuration
 
-### **🔑 AI Service Configuration** (`.env`)
-```bash
-# Primary Providers (Choose based on your needs)
-GROQ_API_KEY=gsk_xxxxxxxxxxxxxxxxxxxx
-GEMINI_API_KEY=AIzaSyxxxxxxxxxxxxxxxxxx
-TOGETHER_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxx
-DEEPSEEK_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxx
+### AI Service Configuration (`.env`)
+
+```env
+# AI Provider API Keys
+GROQ_API_KEY=your_groq_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
+TOGETHER_API_KEY=your_together_api_key_here
+DEEPSEEK_API_KEY=your_deepseek_api_key_here
+REPLICATE_API_TOKEN=your_replicate_token_here  # Optional for images
 
 # Service Configuration
 SERVICE_PORT=8000
-CORS_ORIGINS=http://localhost:5173,http://localhost:3000
-
-# Optional: Advanced Features
-ENABLE_RATE_LIMITING=true
-MAX_REQUESTS_PER_MINUTE=60
-ENABLE_ANALYTICS=true
+LOG_LEVEL=INFO
 ```
 
-### **🏗️ Backend Configuration** (`application.properties`)
+### Backend Configuration (`application.properties`)
+
 ```properties
+# Server Configuration
+server.port=8080
+spring.application.name=ai-content-generator
+
 # Firebase Configuration
 firebase.credentials.path=firebase-credentials.json
-firebase.project.id=your-project-id
 
 # JWT Configuration
-jwt.secret=your-super-secret-jwt-key-here
-jwt.expiration=86400000
+jwt.secret=your-super-secret-jwt-key-change-this-in-production
+jwt.expiration=900000
+jwt.refresh.expiration=604800000
 
-# AI Service Integration
+# AI Service Configuration
 ai.service.url=http://localhost:8000
-ai.service.timeout=30000
 
 # Rate Limiting
 rate.limit.enabled=true
-rate.limit.daily=10
-rate.limit.premium=100
+rate.limit.daily.messages=10
+rate.limit.daily.images=10
 
 # CORS Configuration
-cors.allowed.origins=http://localhost:5173
-cors.allowed.methods=GET,POST,PUT,DELETE,OPTIONS
-cors.allowed.headers=*
+cors.allowed.origins=http://localhost:5173,http://localhost:3000
 ```
 
-### **🎨 Frontend Configuration** (`.env`)
-```bash
-# API Endpoints
+### Frontend Configuration (`.env`)
+
+```env
 VITE_API_BASE_URL=http://localhost:8080/api
 VITE_AI_SERVICE_URL=http://localhost:8000
-
-# Feature Flags
-VITE_ENABLE_ANALYTICS=true
-VITE_ENABLE_NOTIFICATIONS=true
-VITE_ENABLE_EXPORT=true
-
-# Branding
-VITE_APP_NAME=Creo
-VITE_APP_TAGLINE=AI-Powered Content Generation
 ```
 
-### **🔐 Getting API Keys**
+### Firebase Setup
 
-<details>
-<summary><strong>Groq (Fast & Creative)</strong></summary>
-
-1. Visit [console.groq.com](https://console.groq.com)
-2. Sign up with GitHub/Google (free)
-3. Navigate to API Keys section
-4. Create new API key
-5. **Free Tier**: 14,400 requests/day
-
-</details>
-
-<details>
-<summary><strong>Google Gemini (Structured & Professional)</strong></summary>
-
-1. Visit [aistudio.google.com](https://aistudio.google.com)
-2. Sign in with Google account
-3. Click "Get API Key"
-4. Create new project or use existing
-5. **Free Tier**: 15 requests/minute, 1,500/day
-
-</details>
-
-<details>
-<summary><strong>Together AI (Technical & Reasoning)</strong></summary>
-
-1. Visit [api.together.xyz](https://api.together.xyz)
-2. Sign up with email
-3. Navigate to API Keys
-4. Create new key
-5. **Free Tier**: $25 credit on signup
-
-</details>
-
-<details>
-<summary><strong>DeepSeek (Universal Fallback)</strong></summary>
-
-1. Visit [platform.deepseek.com](https://platform.deepseek.com)
-2. Register account
-3. Go to API Keys section
-4. Generate new key
-5. **Free Tier**: Generous limits for testing
-
-</details>
-
----
-
-## 📁 **Project Structure**
-
-```
-Content-Generator-Ai-Assistant/
-├── � frontend/                    # React 18 + Vite Frontend
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── chat/              # Chat interface components
-│   │   │   │   ├── Sidebar.jsx           # Date-grouped chat history
-│   │   │   │   ├── ChatWindow.jsx        # Animated message display
-│   │   │   │   ├── InputBar.jsx          # Enhanced input with animations
-│   │   │   │   ├── DailyResetIndicator.jsx # Usage tracking & countdown
-│   │   │   │   ├── FollowUpQuestions.jsx  # Context-aware suggestions
-│   │   │   │   └── ImageGenerator.jsx     # AI image generation
-│   │   │   └── ui/                # Reusable UI components
-│   │   │       ├── NotificationContainer.jsx # Top-left notifications
-│   │   │       ├── NotificationItem.jsx      # Individual notifications
-│   │   │       └── ConfirmModal.jsx          # Confirmation dialogs
-│   │   ├── context/               # React Context providers
-│   │   │   ├── AuthContext.jsx           # Authentication state
-│   │   │   ├── ChatContext.jsx           # Chat state management
-│   │   │   └── NotificationContext.jsx   # Notification system
-│   │   ├── hooks/                 # Custom React hooks
-│   │   │   └── useNotifications.js       # Notification utilities
-│   │   ├── pages/                 # Main application pages
-│   │   │   ├── LandingPage.jsx           # Marketing homepage
-│   │   │   ├── ChatPage.jsx              # Main chat interface
-│   │   │   ├── LoginPage.jsx             # User authentication
-│   │   │   ├── RegisterPage.jsx          # User registration
-│   │   │   └── ProfilePage.jsx           # User profile management
-│   │   └── services/              # API integration
-│   │       ├── api.js                    # Axios configuration
-│   │       ├── authService.js            # Authentication API
-│   │       ├── chatService.js            # Chat API
-│   │       └── userService.js            # User management API
-│   ├── package.json               # Dependencies & scripts
-│   └── tailwind.config.js         # Custom styling configuration
-│
-├── 🏗️ backend/                     # Spring Boot 3.2 Backend
-│   ├── src/main/java/com/contentgen/
-│   │   ├── controllers/           # REST API endpoints
-│   │   │   ├── AuthController.java       # Authentication endpoints
-│   │   │   ├── UserController.java       # User management
-│   │   │   ├── ChatController.java       # Chat operations
-│   │   │   ├── ImageController.java      # Image generation
-│   │   │   └── DebugController.java      # Development utilities
-│   │   ├── services/              # Business logic layer
-│   │   │   ├── AuthService.java          # Authentication logic
-│   │   │   ├── UserService.java          # User operations
-│   │   │   ├── ChatService.java          # Chat management
-│   │   │   └── AIProxyService.java       # AI service integration
-│   │   ├── models/                # Data models (Firestore)
-│   │   │   ├── User.java                 # User entity
-│   │   │   ├── ChatSession.java          # Chat session entity
-│   │   │   └── ChatMessage.java          # Message entity
-│   │   ├── config/                # Spring configuration
-│   │   │   ├── SecurityConfig.java       # Security & CORS
-│   │   │   ├── FirebaseConfig.java       # Firebase integration
-│   │   │   └── WebClientConfig.java      # HTTP client setup
-│   │   └── dto/                   # Data transfer objects
-│   │       ├── ChatRequest.java          # Chat API requests
-│   │       ├── ChatResponse.java         # Chat API responses
-│   │       └── UserProfileDTO.java       # User profile data
-│   └── pom.xml                    # Maven dependencies
-│
-├── 🤖 ai-service/                  # Python FastAPI AI Service
-│   ├── routers/                   # API route handlers
-│   │   ├── chat.py                       # Chat & streaming endpoints
-│   │   ├── tools.py                      # Export & conversion tools
-│   │   ├── generate.py                   # Content generation endpoints
-│   │   ├── followup.py                   # Follow-up questions
-│   │   └── image.py                      # AI image generation
-│   ├── services/                  # Core business logic
-│   │   ├── model_router.py               # Intelligent AI routing
-│   │   ├── ai_client.py                  # Multi-provider AI client
-│   │   ├── streaming.py                  # Real-time streaming
-│   │   ├── export_service.py             # Format conversion
-│   │   ├── pdf_exporter.py               # Professional PDF generation
-│   │   ├── image_service.py              # Image generation logic
-│   │   ├── followup_service.py           # Context-aware suggestions
-│   │   └── post_processor.py             # Content optimization
-│   ├── prompts/                   # AI prompt templates
-│   │   ├── templates.py                  # Content-type prompts
-│   │   ├── tone_modifiers.py             # Tone & style modifiers
-│   │   ├── pdf_templates.py              # PDF styling templates
-│   │   └── resume_template.py            # Resume-specific prompts
-│   ├── models/                    # Data schemas
-│   │   └── schemas.py                    # Pydantic models
-│   ├── utils/                     # Utility functions
-│   │   └── text_utils.py                 # Text processing utilities
-│   ├── main.py                    # FastAPI application entry
-│   └── requirements.txt           # Python dependencies
-│
-├── 📚 docs/                       # Documentation
-│   ├── SETUP_GUIDE.md                   # Complete setup instructions
-│   ├── AI_IMPLEMENTATION_COMPLETE.md    # AI service documentation
-│   ├── FRONTEND_UPGRADE_SUMMARY.md      # Frontend features guide
-│   ├── FOLLOWUP_SETUP_GUIDE.md          # Follow-up questions setup
-│   ├── NOTIFICATION_SYSTEM_GUIDE.md     # Notification system docs
-│   └── API_DOCUMENTATION.md             # Complete API reference
-│
-└── 🔧 config/                     # Configuration files
-    ├── setup.sh                         # Automated setup script
-    ├── docker-compose.yml               # Container orchestration
-    └── .env.example                     # Environment template
-```
-
-### **🎯 Key Directories Explained**
-
-| Directory | Purpose | Key Features |
-|-----------|---------|--------------|
-| **frontend/src/components/chat/** | Chat interface | Real-time streaming, animations, notifications |
-| **backend/src/main/java/com/contentgen/** | Spring Boot API | JWT auth, Firestore integration, rate limiting |
-| **ai-service/services/** | AI orchestration | Multi-provider routing, streaming, export |
-| **ai-service/prompts/** | Content templates | 12 content types, tone modifiers, PDF templates |
-
----
-
-## 🔒 **Security & Authentication**
-
-### **🛡️ Multi-Layer Security**
-
-<table>
-<tr>
-<td width="50%">
-
-**Authentication Layer**
-- JWT token-based authentication
-- Secure password hashing (BCrypt)
-- Automatic token refresh
-- Session management
-
-</td>
-<td width="50%">
-
-**API Security**
-- CORS protection
-- Rate limiting (10 requests/day free)
-- Input validation & sanitization
-- SQL injection prevention
-
-</td>
-</tr>
-</table>
-
-### **🔐 Data Protection**
-
-- **Firebase Security Rules**: Document-level access control
-- **Environment Variables**: Secure API key management
-- **HTTPS Enforcement**: SSL/TLS encryption in production
-- **Data Validation**: Comprehensive input sanitization
-
-### **⚡ Rate Limiting System**
+1. Create a Firebase project at [Firebase Console](https://console.firebase.google.com/)
+2. Enable Firestore Database
+3. Create a service account and download credentials
+4. Save as `backend/src/main/resources/firebase-credentials.json`
+5. Update Firestore security rules:
 
 ```javascript
-// Free Tier Limits
-{
-  dailyMessages: 10,
-  resetTime: "00:00 UTC",
-  gracePeriod: "5 minutes",
-  upgradePrompt: "Premium available"
-}
-
-// Premium Tier (Future)
-{
-  dailyMessages: 1000,
-  priorityQueue: true,
-  advancedFeatures: true,
-  dedicatedSupport: true
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /chatSessions/{sessionId} {
+      allow read, write: if request.auth != null;
+    }
+    match /chatMessages/{messageId} {
+      allow read, write: if request.auth != null;
+    }
+  }
 }
 ```
 
-## 📊 Database Schema
-
-### Users Table
-- User authentication and profile data
-- Daily message count tracking
-- Plan management (free/premium)
-
-### Chat Sessions Table
-- Conversation grouping
-- Content type tracking
-- Timestamps for sorting
-
-### Chat Messages Table
-- User and AI messages
-- Model and token tracking
-- Full conversation history
-
-See [`database/schema.sql`](database/schema.sql) for complete schema.
-
 ---
 
-## 🧪 **Testing & Quality Assurance**
+## 📚 API Reference
 
-### **🔍 Comprehensive Testing Suite**
+### Authentication Endpoints
 
-```bash
-# Frontend Testing
-cd frontend
-npm run test              # Unit tests with Vitest
-npm run test:e2e          # End-to-end tests with Playwright
-npm run lint              # ESLint code quality
-npm run type-check        # TypeScript validation
-
-# Backend Testing
-cd backend
-./mvnw test              # JUnit integration tests
-./mvnw verify            # Full test suite with coverage
-./mvnw checkstyle:check  # Code style validation
-
-# AI Service Testing
-cd ai-service
-python -m pytest tests/                    # Unit tests
-python test_all_providers.py              # Provider integration tests
-python test_followup_endpoint.py          # Feature-specific tests
-```
-
-### **📊 Quality Metrics**
-
-| Component | Test Coverage | Performance | Security Score |
-|-----------|---------------|-------------|----------------|
-| **Frontend** | 85%+ | Lighthouse 95+ | A+ Security Headers |
-| **Backend** | 90%+ | <200ms response | OWASP Compliant |
-| **AI Service** | 80%+ | <2s generation | API Key Secured |
-
-### **🚀 Performance Benchmarks**
-
-- **First Contentful Paint**: <1.5s
-- **Time to Interactive**: <3s
-- **AI Response Time**: <2s (streaming starts <500ms)
-- **PDF Generation**: <3s
-- **Database Queries**: <100ms average
-
----
-
-## 🚢 **Deployment & Production**
-
-### **☁️ Recommended Hosting Stack**
-
-<table>
-<tr>
-<td width="25%"><strong>Component</strong></td>
-<td width="25%"><strong>Service</strong></td>
-<td width="25%"><strong>Free Tier</strong></td>
-<td width="25%"><strong>Scaling</strong></td>
-</tr>
-<tr>
-<td>Frontend</td>
-<td>Vercel / Netlify</td>
-<td>Unlimited static sites</td>
-<td>Global CDN</td>
-</tr>
-<tr>
-<td>Backend API</td>
-<td>Railway / Render</td>
-<td>750 hours/month</td>
-<td>Auto-scaling</td>
-</tr>
-<tr>
-<td>AI Service</td>
-<td>Railway / Fly.io</td>
-<td>750 hours/month</td>
-<td>Horizontal scaling</td>
-</tr>
-<tr>
-<td>Database</td>
-<td>Firebase Firestore</td>
-<td>1GB storage</td>
-<td>Auto-scaling</td>
-</tr>
-</table>
-
-### **🐳 Docker Deployment**
-
-```bash
-# Build and run all services
-docker-compose up -d
-
-# Individual service deployment
-docker build -t creo-frontend ./frontend
-docker build -t creo-backend ./backend
-docker build -t creo-ai ./ai-service
-
-# Production deployment with scaling
-docker-compose -f docker-compose.prod.yml up -d --scale ai-service=3
-```
-
-### **🔧 Environment-Specific Configuration**
-
-<details>
-<summary><strong>Production Environment</strong></summary>
-
-```bash
-# Frontend (.env.production)
-VITE_API_BASE_URL=https://api.creo.com/api
-VITE_AI_SERVICE_URL=https://ai.creo.com
-VITE_ENABLE_ANALYTICS=true
-
-# Backend (application-prod.properties)
-server.port=8080
-spring.profiles.active=prod
-jwt.secret=${JWT_SECRET}
-firebase.credentials.path=${FIREBASE_CREDENTIALS_PATH}
-
-# AI Service (.env.production)
-SERVICE_PORT=8000
-CORS_ORIGINS=https://creo.com,https://www.creo.com
-ENABLE_RATE_LIMITING=true
-```
-
-</details>
-
-<details>
-<summary><strong>Staging Environment</strong></summary>
-
-```bash
-# Frontend (.env.staging)
-VITE_API_BASE_URL=https://staging-api.creo.com/api
-VITE_AI_SERVICE_URL=https://staging-ai.creo.com
-VITE_ENABLE_ANALYTICS=false
-
-# Backend (application-staging.properties)
-server.port=8080
-spring.profiles.active=staging
-logging.level.com.contentgen=DEBUG
-
-# AI Service (.env.staging)
-SERVICE_PORT=8000
-ENABLE_RATE_LIMITING=false
-MAX_REQUESTS_PER_MINUTE=1000
-```
-
-</details>
-
----
-
-## 📚 **API Documentation**
-
-### **🔗 Core Endpoints**
-
-<details>
-<summary><strong>Authentication API</strong></summary>
-
-```javascript
-// Register new user
+#### Register User
+```http
 POST /api/auth/register
+Content-Type: application/json
+
 {
   "email": "user@example.com",
-  "username": "johndoe",
-  "password": "SecurePass123!",
-  "firstName": "John",
-  "lastName": "Doe"
-}
-
-// Login user
-POST /api/auth/login
-{
-  "email": "user@example.com",
-  "password": "SecurePass123!"
-}
-
-// Refresh token
-POST /api/auth/refresh
-{
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "username": "username",
+  "password": "password123",
+  "fullName": "John Doe"
 }
 ```
 
-</details>
+#### Login
+```http
+POST /api/auth/login
+Content-Type: application/json
 
-<details>
-<summary><strong>Chat API</strong></summary>
-
-```javascript
-// Send message (streaming)
-POST /api/chat/message/stream
 {
-  "prompt": "Write a professional email about project updates",
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+**Response:**
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIs...",
+  "user": {
+    "id": "user123",
+    "email": "user@example.com",
+    "username": "username",
+    "fullName": "John Doe"
+  }
+}
+```
+
+### Chat Endpoints
+
+#### Stream Chat Response
+```http
+POST /api/chat/message/stream
+Authorization: Bearer {accessToken}
+Content-Type: application/json
+
+{
+  "sessionId": "session123",
+  "content": "Write a professional email",
   "contentType": "email",
   "tone": "professional",
   "length": "medium",
-  "language": "English",
-  "sessionId": "session-123"
+  "language": "English"
 }
+```
 
-// Get chat sessions
+**Response:** Server-Sent Events (SSE) stream
+
+#### Get Chat Sessions
+```http
 GET /api/chat/sessions
-// Response: Array of chat sessions with metadata
-
-// Delete session
-DELETE /api/chat/sessions/{sessionId}
+Authorization: Bearer {accessToken}
 ```
 
-</details>
+### AI Service Endpoints
 
-<details>
-<summary><strong>AI Service API</strong></summary>
+#### Generate Content
+```http
+POST /chat/stream
+Content-Type: application/json
 
-```javascript
-// Generate content (12 specialized endpoints)
-POST /generate/resume
 {
-  "prompt": "Software Engineer with 5 years experience",
+  "prompt": "Write a blog post about AI",
+  "content_type": "blog_post",
   "tone": "professional",
-  "customInstructions": "Focus on technical skills"
-}
-
-// Export content
-POST /tools/export
-{
-  "content": "# Resume\n\n## Experience\n...",
-  "format": "pdf",
-  "contentType": "resume"
-}
-
-// Get follow-up questions
-POST /followup/questions
-{
-  "contentType": "resume",
-  "initialPrompt": "Software engineer resume",
-  "userId": "user-123"
+  "length": "medium",
+  "language": "English",
+  "user_id": "user123"
 }
 ```
 
-</details>
+#### Generate Image
+```http
+POST /image/generate
+Content-Type: application/json
 
-### **📖 Interactive Documentation**
+{
+  "prompt": "A futuristic city at sunset",
+  "user_id": "user123"
+}
+```
 
-- **AI Service**: http://localhost:8000/docs (Swagger UI)
-- **Backend API**: http://localhost:8080/swagger-ui.html
-- **Postman Collection**: Available in `/docs/postman/`
+#### Export to PDF
+```http
+POST /tools/export-pdf
+Content-Type: application/json
+
+{
+  "content": "# Resume\n\n## Experience...",
+  "content_type": "resume"
+}
+```
+
+**Full API documentation available at:**
+- Backend: `backend/API_DOCUMENTATION.md`
+- AI Service: `ai-service/API_DOCUMENTATION.md`
+- Interactive Swagger UI: http://localhost:8000/docs
 
 ---
 
-## 🛠️ **Development Workflow**
+## 💡 Usage Examples
 
-### **🔄 Running All Services**
+### Example 1: Generate a Blog Post
 
+```javascript
+// Frontend code
+const response = await chatService.sendStreamingMessage({
+  sessionId: currentSessionId,
+  content: "Write a blog post about the future of AI in healthcare",
+  contentType: "blog_post",
+  tone: "professional",
+  length: "long",
+  language: "English"
+});
+```
+
+### Example 2: Generate an ATS-Optimized Resume
+
+```javascript
+const response = await chatService.sendStreamingMessage({
+  sessionId: currentSessionId,
+  content: "Create a resume for a senior software engineer with 5 years experience in React and Node.js",
+  contentType: "resume",
+  tone: "professional",
+  length: "medium",
+  language: "English"
+});
+
+// Export to PDF
+const pdfBlob = await exportService.exportToPDF(response.content, "resume");
+```
+
+### Example 3: Generate Social Media Content
+
+```javascript
+const response = await chatService.sendStreamingMessage({
+  sessionId: currentSessionId,
+  content: "Create an engaging Instagram post about sustainable fashion",
+  contentType: "social_media",
+  tone: "friendly",
+  length: "short",
+  language: "English"
+});
+```
+
+### Example 4: Generate AI Images
+
+```javascript
+const imageResponse = await imageService.generateImage({
+  prompt: "A serene mountain landscape at golden hour",
+  userId: currentUser.id
+});
+
+console.log(imageResponse.image_url); // URL to generated image
+```
+
+---
+
+## 🔧 Development
+
+### Running Tests
+
+**AI Service Tests:**
 ```bash
-# Terminal 1: AI Service
 cd ai-service
-source venv/bin/activate  # or venv\Scripts\activate on Windows
-python main.py
+source venv/bin/activate
+python -m pytest tests/
+```
 
-# Terminal 2: Backend API
+**Backend Tests:**
+```bash
 cd backend
-./mvnw spring-boot:run
+./mvnw test
+```
 
-# Terminal 3: Frontend
+**Frontend Tests:**
+```bash
 cd frontend
-npm run dev
-
-# Terminal 4: Development Tools
-npm run storybook  # Component development
-npm run test:watch # Continuous testing
+npm run test
 ```
 
-### **🔍 Development Tools**
+### Code Quality
 
-| Tool | Purpose | Command |
-|------|---------|---------|
-| **Hot Reload** | Instant code updates | Automatic in all services |
-| **API Docs** | Interactive testing | http://localhost:8000/docs |
-| **Database Admin** | Firebase Console | https://console.firebase.google.com |
-| **Logs** | Real-time monitoring | `docker-compose logs -f` |
-
-### **🐛 Debugging Guide**
-
-<details>
-<summary><strong>Common Issues & Solutions</strong></summary>
-
-**Issue: AI Service won't start**
+**Linting:**
 ```bash
-# Check Python version
-python --version  # Should be 3.10+
+# Frontend
+cd frontend
+npm run lint
 
-# Reinstall dependencies
-pip install -r requirements.txt --force-reinstall
-
-# Check API keys
-python -c "import os; print('GROQ_API_KEY' in os.environ)"
+# Backend (using Checkstyle)
+cd backend
+./mvnw checkstyle:check
 ```
 
-**Issue: Backend connection errors**
+### Building for Production
+
+**Frontend:**
 ```bash
-# Check Java version
-java --version  # Should be 17+
-
-# Verify Firebase credentials
-ls -la firebase-credentials.json
-
-# Test database connection
-curl http://localhost:8080/actuator/health
+cd frontend
+npm run build
+# Output in frontend/dist/
 ```
 
-**Issue: Frontend build failures**
+**Backend:**
 ```bash
-# Clear cache and reinstall
-rm -rf node_modules package-lock.json
-npm install
-
-# Check Node version
-node --version  # Should be 18+
+cd backend
+./mvnw clean package
+# Output in backend/target/ai-content-generator-1.0.0.jar
 ```
 
-</details>
+**AI Service:**
+```bash
+cd ai-service
+pip install -r requirements.txt
+# Run with production settings
+uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
+```
 
-## 🐛 Troubleshooting
+---
 
-### Python Service Won't Start
-- Check OpenRouter API key in `.env`
-- Verify Python 3.10+ installed
-- Install dependencies: `pip install -r requirements.txt`
+## 🚢 Deployment
 
-### Spring Boot Connection Error
-- Verify Supabase credentials
-- Check database is running
-- Test connection with psql
+### Docker Deployment (Recommended)
 
-### Frontend Can't Connect
-- Check backend is running on port 8080
-- Verify CORS configuration
-- Check `.env` file has correct API URL
+**Build Docker images:**
+```bash
+# Frontend
+docker build -t creo-frontend ./frontend
 
-### Rate Limit Issues
-- Check `rate.limit.enabled` in application.properties
-- Verify user's `daily_message_count` in database
-- Limit resets at midnight
+# Backend
+docker build -t creo-backend ./backend
 
-## 📝 License
+# AI Service
+docker build -t creo-ai-service ./ai-service
+```
 
-MIT License - feel free to use this project for learning or commercial purposes.
+**Run with Docker Compose:**
+```bash
+docker-compose up -d
+```
+
+### Cloud Deployment Options
+
+**Frontend:**
+- Vercel (Recommended)
+- Netlify
+- AWS Amplify
+- Firebase Hosting
+
+**Backend:**
+- AWS Elastic Beanstalk
+- Google Cloud Run
+- Heroku
+- DigitalOcean App Platform
+
+**AI Service:**
+- AWS Lambda (with API Gateway)
+- Google Cloud Functions
+- Railway
+- Render
+
+### Environment Variables for Production
+
+Ensure all sensitive data is stored in environment variables:
+- Never commit API keys or credentials
+- Use secrets management (AWS Secrets Manager, Google Secret Manager)
+- Enable HTTPS/TLS for all endpoints
+- Configure proper CORS origins
+- Set up monitoring and logging
+
+---
 
 ## 🤝 Contributing
 
-Contributions welcome! Please:
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+We welcome contributions! Please follow these steps:
 
-## 📧 Support
+1. **Fork the repository**
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. **Commit your changes**
+   ```bash
+   git commit -m 'Add some amazing feature'
+   ```
+4. **Push to the branch**
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+5. **Open a Pull Request**
 
-- **Issues**: Open a GitHub issue
-- **Discussions**: Use GitHub Discussions
-- **Email**: mthoshanthreddy@gmail.com
+### Contribution Guidelines
 
-## 🎉 Acknowledgments
-
-- OpenRouter for free LLM access
-- Supabase for free PostgreSQL hosting
-- Spring Boot and FastAPI communities
+- Follow existing code style and conventions
+- Write clear commit messages
+- Add tests for new features
+- Update documentation as needed
+- Ensure all tests pass before submitting PR
 
 ---
 
-**Built with ❤️ using React, Spring Boot, FastAPI, and PostgreSQL**
+## 📄 License
 
-**Status**: ✅ Backend Complete | ✅ Frontend Complete | 🚀 Ready to Deploy
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- **Groq** - Ultra-fast AI inference
+- **Google Gemini** - Advanced language understanding
+- **Together AI** - Open-source model hosting
+- **DeepSeek** - Reliable AI provider
+- **Replicate** - Stable Diffusion hosting
+- **Firebase** - Backend infrastructure
+- **Spring Boot** - Enterprise Java framework
+- **FastAPI** - Modern Python web framework
+- **React** - UI library
+
+---
+
+## 📞 Support
+
+- **Documentation**: Check the `/docs` folder
+- **Issues**: [GitHub Issues](https://github.com/yourusername/creo-ai-platform/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/creo-ai-platform/discussions)
+- **Email**: support@creo-ai.com
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Premium subscription plans
+- [ ] Team collaboration features
+- [ ] Advanced analytics dashboard
+- [ ] Mobile app (React Native)
+- [ ] Voice input support
+- [ ] Multi-modal content generation
+- [ ] Custom AI model fine-tuning
+- [ ] API access for developers
+- [ ] WordPress/CMS integrations
+- [ ] Browser extensions
+
+---
+
+<div align="center">
+
+**Built with ❤️ by the Creo Team**
+
+⭐ Star us on GitHub if you find this project useful!
+
+[Website](https://creo-ai.com) • [Documentation](./docs) • [API Reference](./ai-service/API_DOCUMENTATION.md) • [Contributing](./CONTRIBUTING.md)
+
+</div>
